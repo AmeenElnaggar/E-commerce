@@ -1,0 +1,33 @@
+<div class="flex justify-between text-base sm:text-2xl mb-4">
+  <app-section-title [title]="{ text1: 'ALL', text2: 'COLLECTIONS' }" />
+  <select
+    class="border-2 border-gray-300 text-sm px-2"
+    #select
+    (change)="onSelectionChange(select.value)"
+  >
+    <option value="relevant">Sort by: Relevant</option>
+    <option value="lowToHigh">Sort by : Low to High</option>
+    <option value="highToLow">Sort by : High to Low</option>
+  </select>
+</div>
+<div
+  class="grid grid-cols-2 md:gird-cols-3 lg:grid-cols-4 gap-4 gap-y-6 relative"
+>
+  @if (!isFetching() && !error() ) { @for (product of products(); track $index)
+  {
+  <app-product-item
+    [productDetails]="{
+      id: product.id,
+      price: product.price,
+      imageCover: product.imageCover,
+      title: product.title
+    }"
+  />
+  } }@else if (error()) {
+  <p class="text-center text-2xl mt-12">{{ error() }}</p>
+  } @else {
+  <div class="absolute right-[-50%] left-[-50%]">
+    <app-spinner />
+  </div>
+  }
+</div>

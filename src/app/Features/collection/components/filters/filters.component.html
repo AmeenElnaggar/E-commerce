@@ -1,0 +1,46 @@
+<div class="min-w-60">
+  <p
+    class="my-2 text-xl flex items-center cursor-pointer gap-2"
+    (click)="onShowFilterOptions()"
+  >
+    FILTERS
+    <img
+      src="frontend_assets/dropdown_icon.png"
+      alt="dropdown-icon"
+      class="h-3 sm:hidden transform transition-transform duration-100"
+      [class]="{
+        'rotate-90': showFilter()
+      }"
+    />
+  </p>
+
+  <!-- Categories -->
+  <div
+    class="border border-gray-300 pl-5 py-3 mt-6 sm:block"
+    [class]="{
+      hidden: !showFilter()
+    }"
+  >
+    <p class="mb-3 text-sm font-medium">CATEGORIES</p>
+    <div class="flex flex-col gap-2 text-sm font-light text-gray-700">
+      <p class="flex gap-2">
+        <input
+          type="checkbox"
+          class="w-3"
+          value="Men's Fashion"
+          (change)="onSelectedFiltersValues($event)"
+        />
+        Men
+      </p>
+      <p class="flex gap-2">
+        <input
+          type="checkbox"
+          class="w-3"
+          value="Women's Fashion"
+          (change)="onSelectedFiltersValues($event)"
+        />
+        Women
+      </p>
+    </div>
+  </div>
+</div>

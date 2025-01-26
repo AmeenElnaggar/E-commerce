@@ -1,0 +1,47 @@
+<div
+  class="absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all z-10"
+  [class]="{
+    'w-full': !isVisible,
+    'w-0': isVisible
+  }"
+>
+  <div class="flex flex-col text-gray-600">
+    <div
+      class="flex items-center gap-4 p-3 cursor-pointer"
+      (click)="changeVisible()"
+    >
+      <img
+        src="frontend_assets/dropdown_icon.png"
+        alt=""
+        class="h-4 rotate-180"
+      />
+      <p>Back</p>
+    </div>
+    <a
+      class="py-2 pl-6 border"
+      routerLink="home"
+      routerLinkActive="active-link"
+      (click)="changeVisible()"
+      >HOME</a
+    >
+    <a
+      class="py-2 pl-6 border"
+      [routerLink]="['collection']"
+      routerLinkActive="active-link"
+      (click)="changeVisible()"
+      >COLLECTION</a
+    >
+    <a
+      class="py-2 pl-6 border"
+      [routerLink]="'/xx'"
+      routerLinkActive="active-link"
+      >ABOUT</a
+    >
+    <a
+      class="py-2 pl-6 border"
+      [routerLink]="'/xx'"
+      routerLinkActive="active-link"
+      >CONTACT</a
+    >
+  </div>
+</div>
