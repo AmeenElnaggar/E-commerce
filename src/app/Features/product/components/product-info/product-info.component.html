@@ -1,0 +1,22 @@
+<div class="flex-1">
+  <h1 class="font-medium text-2xl mt-2">{{ selectedProduct().title }}</h1>
+  <div class="flex items-center gap-1 mt-2">
+    <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
+    <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
+    <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
+    <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
+    <img src="frontend_assets/star_dull_icon.png" alt="" class="w-3 5" />
+    <p class="pl-2">{{ selectedProduct().quantity }}</p>
+  </div>
+  <p class="mt-5 text-3xl font-medium">${{ selectedProduct().price }}</p>
+  <p class="mt-5 text-gray-500 md:w4/5">{{ selectedProduct().description }}</p>
+  <button class="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 mt-5">
+    ADD TO CART
+  </button>
+  <hr class="mt-8 sm:w-4/5" />
+  <div class="text-sm text-gray-500 mt-5 flex flex-col gap-1">
+    <p>100% Original product.</p>
+    <p>Cash on delivery is avaliable on this product.</p>
+    <p>Easy return and exchange policy within 7 days.</p>
+  </div>
+</div>

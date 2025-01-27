@@ -5,6 +5,9 @@ export interface Product {
   imageCover: string;
   ratingsAverage?: number;
   category?: Category;
+  images?: string[];
+  quantity?: number;
+  description?: string;
 }
 
 interface Category {

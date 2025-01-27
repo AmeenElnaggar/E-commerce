@@ -119,4 +119,8 @@ export class ProductsService {
     this.searchValue.set(search);
     this.sortProducts();
   }
+
+  getOriginalProducts() {
+    return [...this.originalProducts()];
+  }
 }
