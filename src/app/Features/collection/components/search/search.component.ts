@@ -1,7 +1,12 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
-import { CollectionService } from '../../services/collection.service';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../../../Shared/services/products.service';
+import { AllProductsService } from '../../../../Shared/services/allProducts.service';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../../../Store/store';
+import {
+  searchBarVisibleAction,
+  searchValueAction,
+} from '../../../../Store/actions/search.action';
 
 @Component({
   selector: 'app-search',
@@ -11,17 +16,16 @@ import { ProductsService } from '../../../../Shared/services/products.service';
   styleUrl: './search.component.css',
 })
 export class SearchComponent {
-  private collectionService = inject(CollectionService);
-  private productsService = inject(ProductsService);
-  searchValue = signal<string>('');
+  private store = inject(Store<StoreInterface>);
 
-  onChangeVisible() {
-    this.collectionService.onCloseSearchBarVisible();
+  searchValue: string = '';
+
+  onCloseSearchBar() {
+    this.store.dispatch(searchBarVisibleAction());
   }
 
-  constructor() {
-    effect(() => this.productsService.updateSearchValue(this.searchValue()), {
-      allowSignalWrites: true,
-    });
+  onSearchChange(value: string) {
+    this.searchValue = value;
+    this.store.dispatch(searchValueAction({ searchValue: value }));
   }
 }

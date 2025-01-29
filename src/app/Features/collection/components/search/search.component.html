@@ -7,6 +7,7 @@
       placeholder="Search"
       class="flex-1 outline-none bg-inherit text-sm"
       [(ngModel)]="searchValue"
+      (ngModelChange)="onSearchChange($event)"
     />
     <img
       src="frontend_assets/search_icon.png"
@@ -18,6 +19,6 @@
     src="frontend_assets/cross_icon.png"
     alt="cross_icon"
     class="inline w-3 cursor-pointer"
-    (click)="onChangeVisible()"
+    (click)="onCloseSearchBar()"
   />
 </div>

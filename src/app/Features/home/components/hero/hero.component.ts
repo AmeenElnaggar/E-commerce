@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { ProductsService } from '../../../../Shared/services/products.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-hero',
@@ -8,6 +7,4 @@ import { ProductsService } from '../../../../Shared/services/products.service';
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css',
 })
-export class HeroComponent {
-  private productService = inject(ProductsService);
-}
+export class HeroComponent {}

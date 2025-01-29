@@ -9,7 +9,8 @@
       Lorem Ipsum has been the.
     </p>
   </div>
-  @if (!isFetching() && !error()) {
+  <!-- @if (!isFetching() && !error()) {} -->
+  @if (!(isLoading$ | async) && !(error$|async)) {
   <!-- Best Sellers Data -->
   <div
     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6"
@@ -26,8 +27,8 @@
 
     }
   </div>
-  }@else if (error()) {
-  <p class="text-center text-2xl mt-12">{{ error() }}</p>
+  } @else if (error$ | async) {
+  <p class="text-center sm:text-2xl sm:mt-12">{{ error$ | async }}</p>
   } @else {
   <app-spinner />
   }

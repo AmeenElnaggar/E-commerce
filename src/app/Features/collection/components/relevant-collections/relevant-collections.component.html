@@ -3,7 +3,7 @@
   <select
     class="border-2 border-gray-300 text-sm px-2"
     #select
-    (change)="onSelectionChange(select.value)"
+    (change)="onSelectSortOptions(select.value)"
   >
     <option value="relevant">Sort by: Relevant</option>
     <option value="lowToHigh">Sort by : Low to High</option>
@@ -13,8 +13,8 @@
 <div
   class="grid grid-cols-2 md:gird-cols-3 lg:grid-cols-4 gap-4 gap-y-6 relative"
 >
-  @if (!isFetching() && !error() ) { @for (product of products(); track $index)
-  {
+  @if (!(isLoading$ | async) && !(error$ | async) ) { @for (product of products$
+  | async; track $index) {
   <app-product-item
     [productDetails]="{
       id: product.id,
@@ -23,8 +23,10 @@
       title: product.title
     }"
   />
-  } }@else if (error()) {
-  <p class="text-center text-2xl mt-12">{{ error() }}</p>
+  } } @else if (error$ | async) {
+  <p class="absolute w-full sm:text-xl text-center">
+    {{ error$ | async }}
+  </p>
   } @else {
   <div class="absolute right-[-50%] left-[-50%]">
     <app-spinner />
