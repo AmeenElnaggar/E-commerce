@@ -2,27 +2,33 @@ import {
   Directive,
   effect,
   inject,
-  input,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { CollectionService } from '../services/collection.service';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../../Store/store';
+import { Observable } from 'rxjs';
+import { searchBarVisisbleSelector } from '../../../Store/selectors/search.selector';
 
 @Directive({
   selector: '[appSearch]',
   standalone: true,
 })
-export class SearchDirective {
-  private collectionService = inject(CollectionService);
+export class SearchBarDirective {
+  private store = inject(Store<StoreInterface>);
   private templateRef = inject(TemplateRef);
-  private viewContainer = inject(ViewContainerRef);
+  private viewContainerRef = inject(ViewContainerRef);
+
+  isVisible$: Observable<boolean> = this.store.select(
+    searchBarVisisbleSelector
+  );
 
   constructor() {
-    effect(() => {
-      if (this.collectionService.isVisible() === true) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
+    this.isVisible$.subscribe((visible) => {
+      if (visible) {
+        this.viewContainerRef.createEmbeddedView(this.templateRef);
       } else {
-        this.viewContainer.clear();
+        this.viewContainerRef.clear();
       }
     });
   }

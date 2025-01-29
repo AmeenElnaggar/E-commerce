@@ -1,5 +1,5 @@
 import { StoreInterface } from '../store';
 
-export const productsSelector = (state: StoreInterface) => {
+export const allProductsSelector = (state: StoreInterface) => {
   return state.products.allProducts;
 };

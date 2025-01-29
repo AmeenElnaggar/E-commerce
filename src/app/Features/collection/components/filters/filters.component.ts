@@ -1,13 +1,10 @@
-import {
-  Component,
-  effect,
-  ElementRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../../../Shared/services/products.service';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../../../Store/store';
+import { selectedCategoriesAction } from '../../../../Store/actions/categories.action';
+import { selectedCategoriesSelector } from '../../../../Store/selectors/categories.selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-filters',
@@ -17,15 +14,20 @@ import { ProductsService } from '../../../../Shared/services/products.service';
   styleUrl: './filters.component.css',
 })
 export class FiltersComponent {
-  private productsService = inject(ProductsService);
+  private store = inject(Store<StoreInterface>);
+
   showFilter = signal<boolean>(true);
 
   onShowFilterOptions() {
     this.showFilter.update((prev) => !prev);
   }
 
-  onSelectedFiltersValues(event: Event) {
+  toggleCategory(event: Event) {
     const checkBoxInput = event.target as HTMLInputElement;
-    this.productsService.toggleCategory(checkBoxInput.value);
+    this.store.dispatch(
+      selectedCategoriesAction({
+        categoryId: checkBoxInput.value,
+      })
+    );
   }
 }

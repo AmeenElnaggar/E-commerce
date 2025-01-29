@@ -53,7 +53,7 @@
       src="frontend_assets/search_icon.png"
       alt="search-icon"
       class="w-5 cursor-pointer"
-      (click)="changeSearchBarVisible()"
+      (click)="onOpenSearchBar()"
     />
 
     <div class="group relative">
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="relative">
-      <a [routerLink]="'/'">
+      <a [routerLink]="['cart']">
         <img
           src="frontend_assets/cart_icon.png"
           alt="cart-icon"

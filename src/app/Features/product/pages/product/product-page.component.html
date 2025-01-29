@@ -1,0 +1,20 @@
+@if (!(isLoading$ | async) && !(isError$ | async)) {
+<div
+  class="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100"
+>
+  <div class="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+    <div class="sm:w-[45%] sm:h-[45%]">
+      <app-product-images />
+    </div>
+    <app-product-info [selectedProduct]="(selectedProduct$ | async)!" />
+  </div>
+  <app-product-desc-reviews />
+  <app-related-products [selectedProduct]="(selectedProduct$ | async)!" />
+</div>
+}@else if(isError$ | async){
+<p>{{ isError$ | async }}</p>
+}@else {
+<div class="absolute right-[-50%] left-[-50%]">
+  <app-spinner />
+</div>
+}

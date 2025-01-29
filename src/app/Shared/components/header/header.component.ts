@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
-import { CollectionService } from '../../../Features/collection/services/collection.service';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../../Store/store';
+import { searchBarVisibleAction } from '../../../Store/actions/search.action';
 
 @Component({
   selector: 'app-header',
@@ -12,15 +14,15 @@ import { CollectionService } from '../../../Features/collection/services/collect
 })
 export class HeaderComponent {
   private navbarService = inject(NavbarService);
-  private collectionService = inject(CollectionService);
+  private store = inject(Store<StoreInterface>);
   private router = inject(Router);
 
   changeSideNavVisible() {
     this.navbarService.setVisible();
   }
 
-  changeSearchBarVisible() {
-    this.collectionService.onOpenSearchBarVisible();
+  onOpenSearchBar() {
+    this.store.dispatch(searchBarVisibleAction());
     this.router.navigate(['/collection']);
   }
 }
