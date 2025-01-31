@@ -4,7 +4,7 @@ import { NavbarComponent } from './Core/components/navbar/navbar.component';
 import { FooterComponent } from './Core/components/footer/footer.component';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from './Store/store';
-import { getCollectionAction } from './Store/actions/collection.action';
+import { getCollectionAction } from './Store/actions/products.action';
 
 @Component({
   selector: 'app-root',

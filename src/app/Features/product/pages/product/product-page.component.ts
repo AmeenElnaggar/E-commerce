@@ -16,6 +16,7 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { Product } from '../../../../Shared/models/product.model';
 import { selectedProductDataSelector } from '../../../../Store/selectors/product.selector';
+import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 
 @Component({
   selector: 'app-product-page',
@@ -33,10 +34,12 @@ import { selectedProductDataSelector } from '../../../../Store/selectors/product
 })
 export class ProductPageComponent {
   private store = inject(Store<StoreInterface>);
+  private allProductsService = inject(AllProductsService);
   private activatedRoute = inject(ActivatedRoute);
 
-  isLoading$: Observable<boolean> = this.store.select(spinnerOfUiSelector);
-  isError$: Observable<string> = this.store.select(errorOfUiSelector);
+  isLoading = this.allProductsService.isLoading;
+  error = this.allProductsService.error;
+
   selectedProduct$: Observable<Product> = this.store.select(
     selectedProductDataSelector
   );
@@ -47,5 +50,6 @@ export class ProductPageComponent {
         selectedProductAction({ productId: route['productId'] })
       );
     });
+    this.allProductsService.isLoadingAndErrorStatus();
   }
 }

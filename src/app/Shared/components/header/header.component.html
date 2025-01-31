@@ -61,6 +61,7 @@
         src="frontend_assets/profile_icon.png"
         alt="profile-icon"
         class="w-5 cursor-pointer"
+        (click)="onProfileClick($event)"
       />
       <div class="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
         <div
@@ -68,7 +69,12 @@
         >
           <p class="cursor-pointer hover:text-black">My Profile</p>
           <p class="cursor-pointer hover:text-black">Orders</p>
-          <p class="cursor-pointer hover:text-black">Logout</p>
+          <p
+            class="cursor-pointer hover:text-black"
+            (click)="onLoginOrLogout()"
+          >
+            {{ loginOrLogout }}
+          </p>
         </div>
       </div>
     </div>

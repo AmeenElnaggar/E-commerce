@@ -1,4 +1,4 @@
-@if (!(isLoading$ | async) && !(isError$ | async)) {
+@if (!(isLoading()) && !(error())) {
 <div
   class="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100"
 >
@@ -11,8 +11,8 @@
   <app-product-desc-reviews />
   <app-related-products [selectedProduct]="(selectedProduct$ | async)!" />
 </div>
-}@else if(isError$ | async){
-<p>{{ isError$ | async }}</p>
+}@else if(error()){
+<p>{{ error() }}</p>
 }@else {
 <div class="absolute right-[-50%] left-[-50%]">
   <app-spinner />

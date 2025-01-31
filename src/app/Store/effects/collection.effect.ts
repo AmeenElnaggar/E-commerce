@@ -3,10 +3,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../store';
 import { HttpClient } from '@angular/common/http';
-import { getCollectionAction } from '../actions/collection.action';
 import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 import { Product } from '../../Shared/models/product.model';
 import { startLoading, stopLoading } from '../actions/ui.actions';
+import {
+  getAllProducts,
+  getCollectionAction,
+} from '../actions/products.action';
 
 export class CollectionEffect {
   private actions$ = inject(Actions);
@@ -22,12 +25,14 @@ export class CollectionEffect {
           .get<{ data: Product[] }>(
             'https://ecommerce.routemisr.com/api/v1/products'
           )
-          .pipe(map((res) => res['data']));
+          .pipe(map((res) => res['data']))
+          .pipe(
+            map((response: any) => {
+              return getAllProducts({ payload: response });
+            })
+          );
       }),
-      map((collection) => ({
-        type: '[Products] Get Avaliable Products',
-        payload: collection,
-      })),
+
       tap(() => this.store.dispatch(stopLoading())),
       catchError(() => {
         this.store.dispatch(stopLoading());

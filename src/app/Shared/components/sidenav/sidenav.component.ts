@@ -15,6 +15,6 @@ export class SidenavComponent {
   isVisible: boolean = this.navbarService.visible();
 
   changeVisible() {
-    this.navbarService.setVisible();
+    this.navbarService.setVisibleFn();
   }
 }
