@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { SectionTitleComponent } from '../../../../Shared/components/section-title/section-title.component';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
@@ -6,7 +6,7 @@ import { ProductItemComponent } from '../../../../Shared/components/product-item
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../../Store/store';
 import { AllProductsService } from '../../../../Shared/services/allProducts.service';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
 import { Product } from '../../../../Shared/models/product.model';
 import {
   spinnerOfUiSelector,
@@ -33,14 +33,20 @@ import { sortOptionsAction } from '../../../../Store/actions/sort.action';
 })
 export class RelevantCollectionsComponent {
   private store = inject(Store<StoreInterface>);
+  private destroyRef = inject(DestroyRef);
   private allProductsService = inject(AllProductsService);
 
-  isLoading$: Observable<boolean> = this.store.select(spinnerOfUiSelector);
-  error$: Observable<string> = this.store.select(errorOfUiSelector);
+  isLoading = this.allProductsService.isLoading;
+  error = this.allProductsService.error;
+
   products$: Observable<Product[]> =
     this.allProductsService.sortedProductsBySortOptions$;
 
   onSelectSortOptions(sortOptionValue: string) {
     this.store.dispatch(sortOptionsAction({ sortOption: sortOptionValue }));
+  }
+
+  ngOnInit() {
+    this.allProductsService.isLoadingAndErrorStatus();
   }
 }

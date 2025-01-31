@@ -11,7 +11,7 @@
     </p>
   </div>
 
-  @if (!(isLoading$ | async) && !(error$ | async)) {
+  @if (!(isLoading()) && !(error() )) {
   <!-- Latest Collection Data -->
   <div
     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6"
@@ -28,8 +28,8 @@
 
     }
   </div>
-  } @else if (error$ | async) {
-  <p class="text-center sm:text-2xl mt-12">{{ error$ | async }}</p>
+  } @else if (error() ) {
+  <p class="text-center sm:text-2xl mt-12">{{ error() }}</p>
   } @else {
   <app-spinner />
   }

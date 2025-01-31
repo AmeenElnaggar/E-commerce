@@ -1,9 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, effect, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../Store/store';
-import { searchBarVisibleAction } from '../../../Store/actions/search.action';
+import { AuthStatusService } from '../../services/authStatus.service';
 
 @Component({
   selector: 'app-header',
@@ -14,15 +12,34 @@ import { searchBarVisibleAction } from '../../../Store/actions/search.action';
 })
 export class HeaderComponent {
   private navbarService = inject(NavbarService);
-  private store = inject(Store<StoreInterface>);
-  private router = inject(Router);
+  private authStatusService = inject(AuthStatusService);
+
+  loginOrLogout: string = '';
+
+  constructor() {
+    effect(() => {
+      this.loginOrLogout = this.authStatusService.status();
+    });
+  }
+
+  ngOnInit() {
+    // this.navbarService.onReload();
+    this.authStatusService.ChangeStatus();
+  }
 
   changeSideNavVisible() {
-    this.navbarService.setVisible();
+    this.navbarService.setVisibleFn();
   }
 
   onOpenSearchBar() {
-    this.store.dispatch(searchBarVisibleAction());
-    this.router.navigate(['/collection']);
+    this.navbarService.openSearchBarFn();
+  }
+
+  onProfileClick(event: Event) {
+    this.navbarService.profileCheckFn(event);
+  }
+
+  onLoginOrLogout() {
+    this.authStatusService.logoutCheckFn();
   }
 }

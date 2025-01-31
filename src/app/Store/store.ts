@@ -5,6 +5,8 @@ import * as fromCategories from './reducers/categories.reducer';
 import * as fromSort from './reducers/sort.reducer';
 import * as fromSelectedProduct from './reducers/product.reducer';
 import * as fromSearch from './reducers/search.reducer';
+import * as fromCart from './reducers/cart.reducer';
+import * as fromAuth from './reducers/authentication.reducer';
 
 export interface StoreInterface {
   products: fromProducts.State;
@@ -13,6 +15,8 @@ export interface StoreInterface {
   sort: fromSort.State;
   product: fromSelectedProduct.State;
   search: fromSearch.State;
+  cart: fromCart.State;
+  auth: fromAuth.State;
 }
 
 export const reducers: ActionReducerMap<StoreInterface> = {
@@ -22,4 +26,6 @@ export const reducers: ActionReducerMap<StoreInterface> = {
   sort: fromSort.sortOptionsReducer,
   product: fromSelectedProduct.selectedProductReducer,
   search: fromSearch.searchValueReducer,
+  cart: fromCart.cartReducer,
+  auth: fromAuth.authReducer,
 };
