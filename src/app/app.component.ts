@@ -5,8 +5,6 @@ import { FooterComponent } from './Core/components/footer/footer.component';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from './Store/store';
 import { getCollectionAction } from './Store/actions/products.action';
-<<<<<<< HEAD
-=======
 import { ValidationService } from './Features/authentication/services/validation.service';
 import {
   authStatusSelector,
@@ -15,7 +13,6 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { SpinnerComponent } from './Shared/spinner/spinner.component';
 import { NavbarService } from './Shared/services/navbar.service';
->>>>>>> Authentication
 
 @Component({
   selector: 'app-root',

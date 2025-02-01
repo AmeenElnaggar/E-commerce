@@ -44,8 +44,6 @@ export class NavbarService {
     this.store.dispatch(searchBarVisibleAction());
     this.router.navigate(['/collection']);
   }
-<<<<<<< HEAD
-=======
 
   navigateToHome() {
     this.store.select(selectAuthUserSelector).subscribe((res) => {
@@ -63,5 +61,4 @@ export class NavbarService {
       this.store.dispatch(loginAction({ userData: getUserData }));
     }
   }
->>>>>>> Authentication
 }

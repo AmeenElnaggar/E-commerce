@@ -83,17 +83,4 @@ export class ValidationService {
       this.navigateToHome();
     }
   }
-<<<<<<< HEAD
-
-  onReload() {
-    let getUserData: any = localStorage.getItem('User');
-    const userToken: any = localStorage.getItem('token');
-    if (userToken) {
-      getUserData = JSON.parse(getUserData);
-      this.store.dispatch(loginAction({ userData: getUserData }));
-      this.navigateToHome();
-    }
-  }
-=======
->>>>>>> Authentication
 }
