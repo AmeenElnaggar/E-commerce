@@ -43,5 +43,15 @@
       routerLinkActive="active-link"
       >CONTACT</a
     >
+    <a class="py-2 pl-6 border">My Profile</a>
+    <a class="py-2 pl-6 border">Orders</a>
+    <a
+      class="py-2 pl-6 border"
+      (click)="onLoginOrLogout()"
+      routerLink="login"
+      routerLinkActive="active-link"
+    >
+      {{ loginOrLogout }}
+    </a>
   </div>
 </div>

@@ -44,4 +44,24 @@ export class NavbarService {
     this.store.dispatch(searchBarVisibleAction());
     this.router.navigate(['/collection']);
   }
+<<<<<<< HEAD
+=======
+
+  navigateToHome() {
+    this.store.select(selectAuthUserSelector).subscribe((res) => {
+      if (res) {
+        this.router.navigate(['/home'], { replaceUrl: true });
+      }
+    });
+  }
+
+  onReload() {
+    let getUserData: any = localStorage.getItem('User');
+    const userToken: any = localStorage.getItem('token');
+    if (userToken) {
+      getUserData = JSON.parse(getUserData);
+      this.store.dispatch(loginAction({ userData: getUserData }));
+    }
+  }
+>>>>>>> Authentication
 }

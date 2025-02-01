@@ -61,7 +61,11 @@ export class LoginFormComponent {
       this.myForm.controls.password.setValue(userData.password);
     }
     this.authStatusService.handleError();
+<<<<<<< HEAD
     this.validationService.onReload();
+=======
+    // this.validationService.onReload();
+>>>>>>> Authentication
   }
 
   get emailIsInvalid() {

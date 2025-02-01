@@ -83,6 +83,7 @@ export class ValidationService {
       this.navigateToHome();
     }
   }
+<<<<<<< HEAD
 
   onReload() {
     let getUserData: any = localStorage.getItem('User');
@@ -93,4 +94,6 @@ export class ValidationService {
       this.navigateToHome();
     }
   }
+=======
+>>>>>>> Authentication
 }

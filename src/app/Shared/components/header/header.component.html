@@ -63,10 +63,11 @@
         class="w-5 cursor-pointer"
         (click)="onProfileClick($event)"
       />
-      <div class="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+      <div class="relative group">
         <div
-          class="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded"
+          class="hidden sm:group-hover:block absolute dropdown-menu right-0 pt-4"
         >
+<<<<<<< HEAD
           <p class="cursor-pointer hover:text-black">My Profile</p>
           <p class="cursor-pointer hover:text-black">Orders</p>
           <p
@@ -75,6 +76,20 @@
           >
             {{ loginOrLogout }}
           </p>
+=======
+          <div
+            class="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded"
+          >
+            <p class="cursor-pointer hover:text-black">My Profile</p>
+            <p class="cursor-pointer hover:text-black">Orders</p>
+            <p
+              class="cursor-pointer hover:text-black"
+              (click)="onLoginOrLogout()"
+            >
+              {{ loginOrLogout }}
+            </p>
+          </div>
+>>>>>>> Authentication
         </div>
       </div>
     </div>
