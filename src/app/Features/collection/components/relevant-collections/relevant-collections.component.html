@@ -13,8 +13,8 @@
 <div
   class="grid grid-cols-2 md:gird-cols-3 lg:grid-cols-4 gap-4 gap-y-6 relative"
 >
-  @if (!(isLoading$ | async) && !(error$ | async) ) { @for (product of products$
-  | async; track $index) {
+  @if (!(isLoading()) && !(error() ) ) { @for (product of products$ | async;
+  track $index) {
   <app-product-item
     [productDetails]="{
       id: product.id,
@@ -23,9 +23,9 @@
       title: product.title
     }"
   />
-  } } @else if (error$ | async) {
+  } } @else if (error() ) {
   <p class="absolute w-full sm:text-xl text-center">
-    {{ error$ | async }}
+    {{ error() }}
   </p>
   } @else {
   <div class="absolute right-[-50%] left-[-50%]">

@@ -3,16 +3,11 @@ import { SectionTitleComponent } from '../../../../Shared/components/section-tit
 
 import { AsyncPipe } from '@angular/common';
 import { ProductItemComponent } from '../../../../Shared/components/product-item/product-item.component';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../../Store/store';
-import { map, Observable } from 'rxjs';
+
+import { Observable } from 'rxjs';
 import { Product } from '../../../../Shared/models/product.model';
-import { allProductsSelector } from '../../../../Store/selectors/products.selector';
 import { SpinnerComponent } from '../../../../Shared/spinner/spinner.component';
-import {
-  errorOfUiSelector,
-  spinnerOfUiSelector,
-} from '../../../../Store/selectors/ui.selector';
+
 import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 
 @Component({
@@ -28,11 +23,14 @@ import { AllProductsService } from '../../../../Shared/services/allProducts.serv
   styleUrl: './best-sellers.component.css',
 })
 export class BestSellersComponent {
-  private store = inject(Store<StoreInterface>);
   private allProductsService = inject(AllProductsService);
 
-  isLoading$: Observable<boolean> = this.store.select(spinnerOfUiSelector);
-  error$: Observable<string> = this.store.select(errorOfUiSelector);
+  isLoading = this.allProductsService.isLoading;
+  error = this.allProductsService.error;
 
   bestProducts$: Observable<Product[]> = this.allProductsService.bestProducts$;
+
+  ngOnInit() {
+    this.allProductsService.isLoadingAndErrorStatus();
+  }
 }

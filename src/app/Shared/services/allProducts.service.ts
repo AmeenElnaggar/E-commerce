@@ -1,18 +1,21 @@
-import { inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../models/product.model';
 import { combineLatest, map, Observable } from 'rxjs';
 
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { allProductsSelector } from '../../Store/selectors/products.selector';
 import { selectedCategoriesSelector } from '../../Store/selectors/categories.selector';
 import { sortOptionSelector } from '../../Store/selectors/sort.selector';
 import { searchValueSelector } from '../../Store/selectors/search.selector';
+import {
+  errorOfUiSelector,
+  spinnerOfUiSelector,
+} from '../../Store/selectors/ui.selector';
 
 @Injectable({ providedIn: 'root' })
 export class AllProductsService {
-  private fireStore = inject(Firestore);
   private store = inject(Store);
+  private destroyRef = inject(DestroyRef);
 
   allProducts$: Observable<Product[]> = this.store.select(allProductsSelector);
 
@@ -72,4 +75,22 @@ export class AllProductsService {
       }
     })
   );
+
+  isLoading = signal<boolean>(true);
+  error = signal<string>('');
+
+  isLoadingAndErrorStatus() {
+    const subscribtionOfLoading = this.store
+      .select(spinnerOfUiSelector)
+      .subscribe((res) => this.isLoading.set(res));
+
+    const subscribtionOfError = this.store
+      .select(errorOfUiSelector)
+      .subscribe((res) => this.error.set(res));
+
+    this.destroyRef.onDestroy(() => {
+      subscribtionOfLoading.unsubscribe();
+      subscribtionOfError.unsubscribe();
+    });
+  }
 }

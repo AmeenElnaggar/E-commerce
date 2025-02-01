@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { Product } from '../../../../Shared/models/product.model';
 import { ImagesPipe } from '../../pipes/product-images.pipe';
 import { Store } from '@ngrx/store';
@@ -16,6 +16,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class ProductImagesComponent {
   private store = inject(Store<StoreInterface>);
+  private destroyRef = inject(DestroyRef);
   selectedProduct$: Observable<Product> = this.store.select(
     selectedProductDataSelector
   );
@@ -27,8 +28,12 @@ export class ProductImagesComponent {
   }
 
   ngOnInit() {
-    this.selectedProduct$.subscribe((product) => {
+    const subscribtion = this.selectedProduct$.subscribe((product) => {
       this.productCoverImage.set(product.imageCover);
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscribtion.unsubscribe();
     });
   }
 }
