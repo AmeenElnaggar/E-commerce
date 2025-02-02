@@ -7,6 +7,8 @@ import { LoginComponent } from './Features/authentication/pages/login/login/logi
 import { SignupComponent } from './Features/authentication/pages/signup/signup/signup.component';
 import { AboutComponent } from './Features/about/page/about/about.component';
 import { ContactComponent } from './Features/contact/page/contact/contact.component';
+import { PlaceOrderComponent } from './Features/placeorders/page/place-order/place-order.component';
+import { isAuthGuard } from './Core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -23,6 +25,11 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+  {
+    path: 'place-orders',
+    component: PlaceOrderComponent,
+    canMatch: [isAuthGuard],
+  },
 
   {
     path: '**',
