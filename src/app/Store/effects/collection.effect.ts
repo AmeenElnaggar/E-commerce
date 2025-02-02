@@ -25,9 +25,15 @@ export class CollectionEffect {
           .get<{ data: Product[] }>(
             'https://ecommerce.routemisr.com/api/v1/products'
           )
-          .pipe(map((res) => res['data']))
           .pipe(
-            map((response: any) => {
+            map((res) =>
+              res['data'].map((product) => {
+                return { ...product, count: 1 };
+              })
+            )
+          )
+          .pipe(
+            map((response: Product[]) => {
               return getAllProducts({ payload: response });
             })
           );

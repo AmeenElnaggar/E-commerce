@@ -20,7 +20,7 @@ export class RelatedProductsComponent {
   private store = inject(Store<StoreInterface>);
   private router = inject(Router);
 
-  selectedProduct = input.required<Product>();
+  selectedProduct = input<Product>();
   releatedProducts$: Observable<Product[]> = this.store.select(
     relatedProductsSelector
   );

@@ -7,19 +7,13 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ValidationService } from '../../services/validation.service';
-import { User } from '../../models/user.model';
-import { NavbarService } from '../../../../Shared/services/navbar.service';
-import { Store } from '@ngrx/store';
-import { selectAuthUserSelector } from '../../../../Store/selectors/authentication.selector';
-import { AsyncPipe } from '@angular/common';
-import { SpinnerComponent } from '../../../../Shared/spinner/spinner.component';
 import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 import { AuthStatusService } from '../../../../Shared/services/authStatus.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, AsyncPipe, SpinnerComponent],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
 })

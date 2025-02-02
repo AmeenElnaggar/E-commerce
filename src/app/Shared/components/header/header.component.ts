@@ -2,22 +2,17 @@ import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
-import { Store } from '@ngrx/store';
-import { authStatusSelector } from '../../../Store/selectors/authentication.selector';
-import { StoreInterface } from '../../../Store/store';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AsyncPipe],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   private navbarService = inject(NavbarService);
   private authStatusService = inject(AuthStatusService);
-  private store = inject(Store<StoreInterface>);
 
   loginOrLogout: string = '';
 
@@ -45,5 +40,15 @@ export class HeaderComponent {
 
   onLoginOrLogout() {
     this.authStatusService.logoutCheckFn();
+  }
+
+  get cartProductsLength() {
+    let cartLength = localStorage.getItem('Products');
+    if (cartLength) {
+      cartLength = JSON.parse(cartLength);
+      return cartLength?.length;
+    } else {
+      return 0;
+    }
   }
 }

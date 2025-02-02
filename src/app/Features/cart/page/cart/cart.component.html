@@ -1,1 +1,14 @@
-<p>cart works!</p>
+<app-cart-empty *cartEmpty />
+<div *cartNotEmpty>
+  <app-cart-products />
+  <div class="flex justify-end my-20">
+    <div class="w-full sm:w-[450px]">
+      <app-cart-total />
+      <div class="w-full text-end">
+        <button class="bg-black text-white text-sm my-8 px-8 py-3">
+          PROCCED TO CHECKOUT
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

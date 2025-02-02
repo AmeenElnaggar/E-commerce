@@ -1,15 +1,21 @@
 <div class="flex-1">
-  <h1 class="font-medium text-2xl mt-2">{{ selectedProduct().title }}</h1>
+  <h1 class="font-medium text-2xl mt-2">
+    {{ (selectedProduct$ | async)!.title }}
+  </h1>
   <div class="flex items-center gap-1 mt-2">
     <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
     <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
     <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
     <img src="frontend_assets/star_icon.png" alt="" class="w-3 5" />
     <img src="frontend_assets/star_dull_icon.png" alt="" class="w-3 5" />
-    <p class="pl-2">{{ selectedProduct().quantity }}</p>
+    <p class="pl-2">{{ (selectedProduct$ | async)!.quantity }}</p>
   </div>
-  <p class="mt-5 text-3xl font-medium">${{ selectedProduct().price }}</p>
-  <p class="mt-5 text-gray-500 md:w4/5">{{ selectedProduct().description }}</p>
+  <p class="mt-5 text-3xl font-medium">
+    ${{ (selectedProduct$ | async)!.price }}
+  </p>
+  <p class="mt-5 text-gray-500 md:w4/5">
+    {{ (selectedProduct$ | async)!.description }}
+  </p>
   <button
     (click)="addToCart()"
     class="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 mt-5"

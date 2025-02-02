@@ -1,10 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
 
@@ -18,7 +13,6 @@ import { AuthStatusService } from '../../services/authStatus.service';
 export class SidenavComponent {
   private authStatusService = inject(AuthStatusService);
   private navbarService = inject(NavbarService);
-  private activ = inject(ActivatedRoute);
 
   isVisible: boolean = this.navbarService.visible();
   loginOrLogout: string = '';

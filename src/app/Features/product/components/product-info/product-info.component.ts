@@ -1,22 +1,24 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Product } from '../../../../Shared/models/product.model';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../../Store/store';
-import { Router } from '@angular/router';
+
+import { ProductService } from '../../services/product.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { CartService } from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'app-product-info',
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './product-info.component.html',
   styleUrl: './product-info.component.css',
 })
 export class ProductInfoComponent {
-  private store = inject(Store<StoreInterface>);
-  private router = inject(Router);
-  selectedProduct = input.required<Product>();
+  private productService = inject(ProductService);
+  private cartservice = inject(CartService);
+  selectedProduct$: Observable<Product> = this.productService.selectedProduct$;
 
   addToCart() {
-    this.router.navigate(['/cart'], { replaceUrl: true });
+    this.cartservice.addProductToLocalStorage();
   }
 }
