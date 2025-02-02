@@ -5,6 +5,8 @@ import { ProductPageComponent } from './Features/product/pages/product/product-p
 import { CartComponent } from './Features/cart/page/cart/cart.component';
 import { LoginComponent } from './Features/authentication/pages/login/login/login.component';
 import { SignupComponent } from './Features/authentication/pages/signup/signup/signup.component';
+import { AboutComponent } from './Features/about/page/about/about.component';
+import { ContactComponent } from './Features/contact/page/contact/contact.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +21,8 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
 
   {
     path: '**',

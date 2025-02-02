@@ -1,0 +1,22 @@
+<div class="w-full">
+  <div class="text-2xl">
+    <app-section-title [title]="{ text1: 'CART', text2: 'TOTALS' }" />
+  </div>
+
+  <div class="flex flex-col gap-2 mt-2 text-sm">
+    <div class="flex justify-between">
+      <p>Subtotal</p>
+      <p>{{ subTotal() | currency }}</p>
+    </div>
+    <hr />
+    <div class="flex justify-between">
+      <p>Shipping Fee</p>
+      <p>{{ shippingFee() | currency }}</p>
+    </div>
+    <hr />
+    <div class="flex justify-between">
+      <p>Total</p>
+      <p>{{ totalPrice() | currency }}</p>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,29 @@
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../../Store/store';
-import { cartSelector } from '../../../../Store/selectors/cart.selector';
-import { loadCartAction } from '../../../../Store/actions/cart.action';
+
+import { CartService } from '../../services/cart.service';
+import { CartEmptyComponent } from '../../components/cart-empty/cart-empty.component';
+import { CartProductsComponent } from '../../components/cart-products/cart-products.component';
+import { CartEmptyDirective } from '../../directives/cartEmpty.directive';
+import { CartTotalComponent } from '../../components/cart-total/cart-total.component';
+import { CartNotEmptyDirective } from '../../directives/cartNotEmpty.directive';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [],
+  imports: [
+    CartEmptyComponent,
+    CartProductsComponent,
+    CartEmptyDirective,
+    CartNotEmptyDirective,
+    CartTotalComponent,
+  ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
 export class CartComponent {
-  private store = inject(Store<StoreInterface>);
+  private cartService = inject(CartService);
+
   ngOnInit() {
-    this.store.dispatch(loadCartAction());
+    this.cartService.startFetchCartProductsFromLS();
   }
 }

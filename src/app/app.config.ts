@@ -20,6 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([loggingInterceptor])),
 
     provideStore(reducers),
-    provideEffects([CollectionEffect, AuthenticationEffect, CartEffect]),
+    provideEffects([
+      CollectionEffect,
+      AuthenticationEffect,
+      CartEffect,
+      CartEffect,
+    ]),
   ],
 };

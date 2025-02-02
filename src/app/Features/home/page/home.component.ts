@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HeroComponent } from '../components/hero/hero.component';
-import { NewsletterBoxComponent } from '../components/newsletter-box/newsletter-box.component';
+import { NewsletterBoxComponent } from '../../../Shared/components/newsletter-box/newsletter-box.component';
 import { OurpolicyComponent } from '../components/ourpolicy/ourpolicy.component';
 import { BestSellersComponent } from '../components/best-sellers/best-sellers.component';
 import { LatestcollectionComponent } from '../components/latest-collection/latestcollection.component';

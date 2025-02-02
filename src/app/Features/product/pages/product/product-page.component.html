@@ -6,10 +6,10 @@
     <div class="sm:w-[45%] sm:h-[45%]">
       <app-product-images />
     </div>
-    <app-product-info [selectedProduct]="(selectedProduct$ | async)!" />
+    <app-product-info />
   </div>
   <app-product-desc-reviews />
-  <app-related-products [selectedProduct]="(selectedProduct$ | async)!" />
+  <app-related-products />
 </div>
 }@else if(error()){
 <p>{{ error() }}</p>

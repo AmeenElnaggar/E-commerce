@@ -1,11 +1,10 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Product } from '../../../../Shared/models/product.model';
 import { ImagesPipe } from '../../pipes/product-images.pipe';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../../Store/store';
+
 import { Observable } from 'rxjs';
-import { selectedProductDataSelector } from '../../../../Store/selectors/product.selector';
 import { AsyncPipe } from '@angular/common';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-images',
@@ -15,25 +14,16 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './product-images.component.css',
 })
 export class ProductImagesComponent {
-  private store = inject(Store<StoreInterface>);
-  private destroyRef = inject(DestroyRef);
-  selectedProduct$: Observable<Product> = this.store.select(
-    selectedProductDataSelector
-  );
+  private productService = inject(ProductService);
 
-  productCoverImage = signal<string>('');
+  selectedProduct$: Observable<Product> = this.productService.selectedProduct$;
+  productCoverImage = this.productService.productCoverImage;
+
+  ngOnInit() {
+    this.productService.getProductCoverImage();
+  }
 
   getClickedImagePath(imagePath: string) {
     this.productCoverImage.set(imagePath);
-  }
-
-  ngOnInit() {
-    const subscribtion = this.selectedProduct$.subscribe((product) => {
-      this.productCoverImage.set(product.imageCover);
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscribtion.unsubscribe();
-    });
   }
 }

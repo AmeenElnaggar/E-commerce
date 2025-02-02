@@ -5,25 +5,14 @@ import { FooterComponent } from './Core/components/footer/footer.component';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from './Store/store';
 import { getCollectionAction } from './Store/actions/products.action';
-import { ValidationService } from './Features/authentication/services/validation.service';
-import {
-  authStatusSelector,
-  selectAuthUserSelector,
-} from './Store/selectors/authentication.selector';
-import { AsyncPipe } from '@angular/common';
+import { selectAuthUserSelector } from './Store/selectors/authentication.selector';
 import { SpinnerComponent } from './Shared/spinner/spinner.component';
 import { NavbarService } from './Shared/services/navbar.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    NavbarComponent,
-    FooterComponent,
-    AsyncPipe,
-    SpinnerComponent,
-  ],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, SpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

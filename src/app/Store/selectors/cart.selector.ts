@@ -1,5 +1,9 @@
 import { StoreInterface } from '../store';
 
-export const cartSelector = (state: StoreInterface) => {
-  return state.cart.cartProducts;
+export const loadCartProductsFromLSSelector = (state: StoreInterface) => {
+  return state.cart.localStorageProducts;
 };
+
+// export const updateQuantitySelector = (state: StoreInterface) => {
+//   return state.cart.quantity;
+// };
