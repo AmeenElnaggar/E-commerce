@@ -11,6 +11,8 @@ import {
   errorOfUiSelector,
   spinnerOfUiSelector,
 } from '../../Store/selectors/ui.selector';
+import { selectAuthUserSelector } from '../../Store/selectors/authentication.selector';
+import { authSuccessAction } from '../../Store/actions/authentication.action';
 
 @Injectable({ providedIn: 'root' })
 export class AllProductsService {
@@ -78,6 +80,7 @@ export class AllProductsService {
 
   isLoading = signal<boolean>(true);
   error = signal<string>('');
+  appIsLoading = signal<boolean>(true);
 
   isLoadingAndErrorStatus() {
     const subscribtionOfLoading = this.store
@@ -92,5 +95,21 @@ export class AllProductsService {
       subscribtionOfLoading.unsubscribe();
       subscribtionOfError.unsubscribe();
     });
+  }
+
+  loadPage() {
+    const checkLogin = setInterval(() => {
+      this.store.select(selectAuthUserSelector).subscribe((result) => {
+        this.appIsLoading.set(false);
+        clearInterval(checkLogin);
+      });
+    }, 1000);
+  }
+
+  isAuthenticated() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.store.dispatch(authSuccessAction({ token, user: '' }));
+    }
   }
 }

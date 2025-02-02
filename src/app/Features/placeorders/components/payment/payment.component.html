@@ -1,0 +1,65 @@
+<div class="mt-8">
+  <div class="mt-8 min-w-80">
+    <app-cart-total />
+  </div>
+</div>
+<div class="mt-12">
+  <app-section-title [title]="{ text1: 'PAYMENT', text2: 'METHOD' }" />
+  <!-- payment -->
+  <div class="flex gap-3 flex-col lg:flex-row">
+    <div>
+      <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
+        <p
+          (click)="onClick('stripe')"
+          class="min-w-3.5 h-3.5 border rounded-full"
+          [class]="{
+            'bg-green-400': paymentMethod === 'stripe'
+          }"
+        ></p>
+        <img
+          src="frontend_assets/stripe_logo.png"
+          alt="payment-img"
+          class="h-4 mx-4"
+        />
+      </div>
+    </div>
+    <div>
+      <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
+        <p
+          (click)="onClick('razorpay')"
+          class="min-w-3.5 h-3.5 border rounded-full"
+          [class]="{
+            'bg-green-400': paymentMethod === 'razorpay'
+          }"
+        ></p>
+        <img
+          src="frontend_assets/razorpay_logo.png"
+          alt="payment-img"
+          class="h-4 mx-4"
+        />
+      </div>
+    </div>
+    <div>
+      <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
+        <p
+          (click)="onClick('cod')"
+          class="min-w-3.5 h-3.5 border rounded-full"
+          [class]="{
+            'bg-green-400': paymentMethod === 'cod'
+          }"
+        ></p>
+        <p class="font-medium mx-4 text-sm text-gray-500 h-4">
+          CASH ON DELIVERY
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="w-full text-end mt-8">
+    <button
+      [routerLink]="['/orders']"
+      class="bg-black text-white px-16 py-3 text-sm"
+    >
+      PLACE ORDER
+    </button>
+  </div>
+</div>

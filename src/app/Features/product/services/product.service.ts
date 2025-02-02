@@ -6,6 +6,7 @@ import { selectedProductAction } from '../../../Store/actions/product.actions';
 import { Observable, take } from 'rxjs';
 import { Product } from '../../../Shared/models/product.model';
 import { selectedProductDataSelector } from '../../../Store/selectors/product.selector';
+import { addProductToLoggedUserAction } from '../../../Store/actions/cart.action';
 
 @Injectable({
   providedIn: 'root',

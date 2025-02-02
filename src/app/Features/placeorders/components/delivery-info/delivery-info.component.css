@@ -1,0 +1,6 @@
+:host input {
+  border: 1px solid rgba(128, 128, 128, 4);
+  border-radius: 4px;
+  padding: 6px 18px;
+  width: 100%;
+}

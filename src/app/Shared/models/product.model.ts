@@ -9,6 +9,7 @@ export interface Product {
   quantity?: number;
   description?: string;
   count?: number;
+  date?: string;
 }
 
 interface Category {

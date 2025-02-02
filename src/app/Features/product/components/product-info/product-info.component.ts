@@ -20,5 +20,7 @@ export class ProductInfoComponent {
 
   addToCart() {
     this.cartservice.addProductToLocalStorage();
+    this.cartservice.startFetchCartProductsFromLS();
+    this.cartservice.addProductToLoggedUser();
   }
 }
