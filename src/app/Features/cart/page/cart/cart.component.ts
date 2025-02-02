@@ -6,6 +6,7 @@ import { CartProductsComponent } from '../../components/cart-products/cart-produ
 import { CartEmptyDirective } from '../../directives/cartEmpty.directive';
 import { CartTotalComponent } from '../../components/cart-total/cart-total.component';
 import { CartNotEmptyDirective } from '../../directives/cartNotEmpty.directive';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -22,8 +23,13 @@ import { CartNotEmptyDirective } from '../../directives/cartNotEmpty.directive';
 })
 export class CartComponent {
   private cartService = inject(CartService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.cartService.startFetchCartProductsFromLS();
+  }
+
+  onCheckout() {
+    this.router.navigate(['place-orders'], { replaceUrl: true });
   }
 }

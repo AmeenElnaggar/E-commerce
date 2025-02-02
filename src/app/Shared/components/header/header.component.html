@@ -71,7 +71,12 @@
             class="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded"
           >
             <p class="cursor-pointer hover:text-black">My Profile</p>
-            <p class="cursor-pointer hover:text-black">Orders</p>
+            <p
+              class="cursor-pointer hover:text-black"
+              [routerLink]="['place-orders']"
+            >
+              Orders
+            </p>
             <p
               class="cursor-pointer hover:text-black"
               (click)="onLoginOrLogout()"

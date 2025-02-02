@@ -8,6 +8,7 @@ import {
 import { loadCartProductsFromLSSelector } from '../../../Store/selectors/cart.selector';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../Store/store';
+import { take } from 'rxjs';
 
 @Directive({
   selector: '[cartNotEmpty]',
@@ -25,13 +26,14 @@ export class CartNotEmptyDirective {
   private cartIsEmpty() {
     const subscribtion = this.store
       .select(loadCartProductsFromLSSelector)
+      .pipe(take(1))
       .subscribe((loadedProducts) => {
         loadedProducts.length > 0
           ? this.viewContainerRef.createEmbeddedView(this.templateRef)
           : this.viewContainerRef.clear();
       });
-    this.destroyRef.onDestroy(() => {
-      subscribtion.unsubscribe();
-    });
+    // this.destroyRef.onDestroy(() => {
+    //   subscribtion.unsubscribe();
+    // });
   }
 }

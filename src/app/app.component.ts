@@ -8,6 +8,8 @@ import { getCollectionAction } from './Store/actions/products.action';
 import { selectAuthUserSelector } from './Store/selectors/authentication.selector';
 import { SpinnerComponent } from './Shared/spinner/spinner.component';
 import { NavbarService } from './Shared/services/navbar.service';
+import { CartService } from './Features/cart/services/cart.service';
+import { authSuccessAction } from './Store/actions/authentication.action';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,7 @@ import { NavbarService } from './Shared/services/navbar.service';
 export class AppComponent implements OnInit {
   private store = inject(Store<StoreInterface>);
   private navbarService = inject(NavbarService);
+  private cartService = inject(CartService);
 
   pageIsLoading = signal<boolean>(true);
 
@@ -26,6 +29,10 @@ export class AppComponent implements OnInit {
     this.store.dispatch(getCollectionAction());
     this.navbarService.onReload();
     this.loadPage();
+    const token = localStorage.getItem('token');
+    // if (token) {
+    //   this.store.dispatch(authSuccessAction({ token, user: '' }));
+    // }
   }
 
   loadPage() {

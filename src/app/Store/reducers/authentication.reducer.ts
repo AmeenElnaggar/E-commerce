@@ -21,7 +21,6 @@ const initialState: State = {
 export const authReducer = createReducer(
   initialState,
   on(authSuccessAction, (state, action) => {
-    console.log('Data Added To Store ', action.user);
     const isLoginOrLogout = action.user !== null ? 'Logout' : 'Login';
     return {
       ...state,

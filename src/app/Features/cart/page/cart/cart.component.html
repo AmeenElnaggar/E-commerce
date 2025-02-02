@@ -5,7 +5,10 @@
     <div class="w-full sm:w-[450px]">
       <app-cart-total />
       <div class="w-full text-end">
-        <button class="bg-black text-white text-sm my-8 px-8 py-3">
+        <button
+          class="bg-black text-white text-sm my-8 px-8 py-3"
+          (click)="onCheckout()"
+        >
           PROCCED TO CHECKOUT
         </button>
       </div>
