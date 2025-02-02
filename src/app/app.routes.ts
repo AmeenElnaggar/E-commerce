@@ -9,6 +9,7 @@ import { AboutComponent } from './Features/about/page/about/about.component';
 import { ContactComponent } from './Features/contact/page/contact/contact.component';
 import { PlaceOrderComponent } from './Features/placeorders/page/place-order/place-order.component';
 import { isAuthGuard } from './Core/guards/auth.guard';
+import { OrdersComponent } from './Features/placeorders/page/orders/orders.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path: 'place-orders',
     component: PlaceOrderComponent,
+    canMatch: [isAuthGuard],
+  },
+  {
+    path: 'orders',
+    component: OrdersComponent,
     canMatch: [isAuthGuard],
   },
 

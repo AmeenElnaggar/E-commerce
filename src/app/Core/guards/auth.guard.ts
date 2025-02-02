@@ -10,7 +10,6 @@ export const isAuthGuard: CanMatchFn = (route, segement) => {
 
   return store.select(selectAuthTokenSelector).pipe(
     map((token) => {
-      console.log(token);
       if (token) {
         return true;
       }

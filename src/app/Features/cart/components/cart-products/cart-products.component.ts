@@ -3,7 +3,7 @@ import { SectionTitleComponent } from '../../../../Shared/components/section-tit
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../../../Shared/models/product.model';
 import { AsyncPipe } from '@angular/common';
-import { count } from 'rxjs';
+import { count, Observable } from 'rxjs';
 @Component({
   selector: 'app-cart-products',
   standalone: true,
@@ -13,14 +13,19 @@ import { count } from 'rxjs';
 })
 export class CartProductsComponent {
   private cartService = inject(CartService);
-  savedProducts = this.cartService.savedProductsFromLS$;
+  savedProducts$: Observable<Product[]> = this.cartService.savedProductsFromLS$;
 
   onChangeCount(event: Event, selectedProduct: Product) {
     const quantityInput = event.target as HTMLInputElement;
-    this.cartService.updateCount(+quantityInput.value, selectedProduct);
+    this.cartService.updateCountOfProductToLS(
+      +quantityInput.value,
+      selectedProduct
+    );
+    this.cartService.updateProductCountOfLoggedUser();
   }
 
   onDeleteProduct(selectedProduct: Product) {
-    this.cartService.deleteProduct(selectedProduct);
+    this.cartService.deleteProductOfLoggedUser();
+    this.cartService.deleteProductFromLS(selectedProduct);
   }
 }

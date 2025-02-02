@@ -2,17 +2,18 @@ import { createReducer, on } from '@ngrx/store';
 import { Product } from '../../Shared/models/product.model';
 import {
   getProductsFromLSAction,
+  getProductsOfLoggedUserAction,
   updateQuantityAction,
 } from '../actions/cart.action';
 
 export interface State {
   localStorageProducts: Product[];
-  quantity: number;
+  loggedUserProducts: Product[];
 }
 
 const initialState: State = {
   localStorageProducts: [],
-  quantity: 1,
+  loggedUserProducts: [],
 };
 // addedProduct: {
 //   id: '',
@@ -25,8 +26,8 @@ export const cartReducer = createReducer(
   initialState,
   on(getProductsFromLSAction, (state, action) => {
     return { ...state, localStorageProducts: action.productsFromLocalStorage };
+  }),
+  on(getProductsOfLoggedUserAction, (state, action) => {
+    return { ...state, loggedUserProducts: action.productsOfLoggedUser };
   })
-  // on(updateQuantityAction, (state, action) => {
-  //   return { ...state, quantity: action.quantity };
-  // })
 );

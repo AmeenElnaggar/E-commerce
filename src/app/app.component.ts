@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './Core/components/navbar/navbar.component';
 import { FooterComponent } from './Core/components/footer/footer.component';
@@ -10,6 +10,7 @@ import { SpinnerComponent } from './Shared/spinner/spinner.component';
 import { NavbarService } from './Shared/services/navbar.service';
 import { CartService } from './Features/cart/services/cart.service';
 import { authSuccessAction } from './Store/actions/authentication.action';
+import { AllProductsService } from './Shared/services/allProducts.service';
 
 @Component({
   selector: 'app-root',
@@ -21,26 +22,21 @@ import { authSuccessAction } from './Store/actions/authentication.action';
 export class AppComponent implements OnInit {
   private store = inject(Store<StoreInterface>);
   private navbarService = inject(NavbarService);
+  private allProductsService = inject(AllProductsService);
   private cartService = inject(CartService);
 
-  pageIsLoading = signal<boolean>(true);
+  pageIsLoading: boolean = true;
+
+  constructor() {
+    effect(() => {
+      this.pageIsLoading = this.allProductsService.appIsLoading();
+    });
+  }
 
   ngOnInit() {
     this.store.dispatch(getCollectionAction());
     this.navbarService.onReload();
-    this.loadPage();
-    const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.store.dispatch(authSuccessAction({ token, user: '' }));
-    // }
-  }
-
-  loadPage() {
-    const checkLogin = setInterval(() => {
-      this.store.select(selectAuthUserSelector).subscribe((result) => {
-        this.pageIsLoading.set(false);
-        clearInterval(checkLogin);
-      });
-    }, 1000);
+    this.allProductsService.loadPage();
+    this.allProductsService.isAuthenticated();
   }
 }

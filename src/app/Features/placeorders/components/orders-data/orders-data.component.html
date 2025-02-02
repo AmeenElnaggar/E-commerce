@@ -1,0 +1,42 @@
+<div>
+  @for (product of (savedProducts$ | async); track $index) { product
+  <div
+    class="py-4 border-t border-b text-gray-700 flex flex-cols md:flex-row md:items-center md:justify-between gap-4"
+  >
+    <div class="flex items-start gap-6 text-sm">
+      <img
+        [src]="product.product.imageCover"
+        alt="product-image"
+        class="w-16 sm:w-20"
+      />
+      <div>
+        <p class="sm:text-base font-medium">
+          {{ product.product.title }}
+        </p>
+        <div class="flex items-center gap-3 mt-2 text-base text-gray-700">
+          <p class="text-lg">${{ product.price }}</p>
+          <p class="text-lg">Quantity: {{ product.count }}</p>
+        </div>
+        <p class="mt-2">
+          Date :
+          <span class="text-gray-400">{{
+            ProductDate(product.product) | date : "fullDate"
+          }}</span>
+        </p>
+        <p class="mt-2">
+          Payment: <span class="text-gray-400">{{ paymentMethod }}</span>
+        </p>
+      </div>
+    </div>
+    <div class="md:w-1/2 flex justify-between">
+      <div class="flex items-center gap-2">
+        <p class="min-w-2 h-2 rounded-full bg-green-500"></p>
+        <p class="text-sm md:text-base">Ready to ship</p>
+      </div>
+      <button class="border px-4 py-2 text-sm font-medium rounded-sm">
+        Track Order
+      </button>
+    </div>
+  </div>
+  }
+</div>

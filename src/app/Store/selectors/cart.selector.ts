@@ -4,6 +4,6 @@ export const loadCartProductsFromLSSelector = (state: StoreInterface) => {
   return state.cart.localStorageProducts;
 };
 
-// export const updateQuantitySelector = (state: StoreInterface) => {
-//   return state.cart.quantity;
-// };
+export const loadCartProductsOfLoggedUserSelector = (state: StoreInterface) => {
+  return state.cart.loggedUserProducts;
+};
