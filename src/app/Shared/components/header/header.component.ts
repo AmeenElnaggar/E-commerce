@@ -2,6 +2,11 @@ import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
+<<<<<<< HEAD
+=======
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
 
 @Component({
   selector: 'app-header',
@@ -14,17 +19,7 @@ export class HeaderComponent {
   private navbarService = inject(NavbarService);
   private authStatusService = inject(AuthStatusService);
 
-  loginOrLogout: string = '';
-
-  constructor() {
-    effect(() => {
-      this.loginOrLogout = this.authStatusService.status();
-    });
-  }
-
-  ngOnInit() {
-    this.authStatusService.ChangeStatus();
-  }
+  loginOrLogout$: Observable<string> = this.authStatusService.status$;
 
   changeSideNavVisible() {
     this.navbarService.setVisibleFn();
@@ -38,7 +33,7 @@ export class HeaderComponent {
     this.navbarService.profileCheckFn(event);
   }
 
-  onLoginOrLogout() {
+  onLogout() {
     this.authStatusService.logoutCheckFn();
   }
 

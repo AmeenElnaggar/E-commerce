@@ -8,7 +8,7 @@ import { SignupComponent } from './Features/authentication/pages/signup/signup/s
 import { AboutComponent } from './Features/about/page/about/about.component';
 import { ContactComponent } from './Features/contact/page/contact/contact.component';
 import { PlaceOrderComponent } from './Features/placeorders/page/place-order/place-order.component';
-import { isAuthGuard } from './Core/guards/auth.guard';
+import { isAuthGuard, isNotAuthGuard } from './Core/guards/auth.guard';
 import { OrdersComponent } from './Features/placeorders/page/orders/orders.component';
 
 export const routes: Routes = [
@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'product/:productId', component: ProductPageComponent },
   { path: 'collection', component: CollectionComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canMatch: [isNotAuthGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },

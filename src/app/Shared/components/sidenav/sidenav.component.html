@@ -44,6 +44,16 @@
       >CONTACT</a
     >
     <a class="py-2 pl-6 border">My Profile</a>
+<<<<<<< HEAD
+    <a
+      class="py-2 pl-6 border"
+      [routerLink]="['orders']"
+      routerLinkActive="active-link"
+      (click)="changeVisible()"
+      >Orders</a
+    >
+=======
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
     <a
       class="py-2 pl-6 border"
       [routerLink]="['orders']"
@@ -53,11 +63,11 @@
     >
     <a
       class="py-2 pl-6 border"
-      (click)="onLoginOrLogout()"
+      (click)="onLogout()"
       routerLink="login"
       routerLinkActive="active-link"
     >
-      {{ loginOrLogout }}
+      {{ loginOrLogout$ | async }}
     </a>
   </div>
 </div>

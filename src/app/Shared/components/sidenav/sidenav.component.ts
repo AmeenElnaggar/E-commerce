@@ -2,11 +2,13 @@ import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-sidenav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css',
 })
@@ -15,19 +17,9 @@ export class SidenavComponent {
   private navbarService = inject(NavbarService);
 
   isVisible: boolean = this.navbarService.visible();
-  loginOrLogout: string = '';
+  loginOrLogout$: Observable<string> = this.authStatusService.status$;
 
-  constructor() {
-    effect(() => {
-      this.loginOrLogout = this.authStatusService.status();
-    });
-  }
-
-  ngOnInit() {
-    this.authStatusService.ChangeStatus();
-  }
-
-  onLoginOrLogout() {
+  onLogout() {
     this.authStatusService.logoutCheckFn();
     this.changeVisible();
   }

@@ -17,4 +17,6 @@ import { RelevantCollectionsComponent } from '../../components/relevant-collecti
   templateUrl: './collection.component.html',
   styleUrl: './collection.component.css',
 })
-export class CollectionComponent {}
+export class CollectionComponent {
+  private allProductsService = inject(AllProductsService);
+}

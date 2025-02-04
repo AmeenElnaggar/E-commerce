@@ -1,9 +1,9 @@
-import { inject } from '@angular/core';
+import { DestroyRef, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../store';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, map, of, switchMap, take, tap, throwError } from 'rxjs';
 import { Product } from '../../Shared/models/product.model';
 import { startLoading, stopLoading } from '../actions/ui.actions';
 import {
@@ -26,6 +26,7 @@ export class CollectionEffect {
             'https://ecommerce.routemisr.com/api/v1/products'
           )
           .pipe(
+            take(1),
             map((res) =>
               res['data'].map((product) => {
                 return { ...product, count: 1 };

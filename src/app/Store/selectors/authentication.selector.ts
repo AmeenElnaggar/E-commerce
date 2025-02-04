@@ -5,20 +5,29 @@ export const selectAuthState = (state: StoreInterface) => {
   return state.auth;
 };
 
-export const selectAuthTokenSelector = createSelector(
+export const authTokenSelector = createSelector(selectAuthState, (state) => {
+  return state.token;
+});
+
+export const loginErrorSelector = createSelector(
   selectAuthState,
-  (state) => state.token
-);
-export const selectAuthUserSelector = createSelector(
-  selectAuthState,
-  (state) => state.user
-);
-export const selectAuthErrorSelector = createSelector(
-  selectAuthState,
-  (state) => state.error
+  (state) => state.loginError
 );
 
-export const authStatusSelector = createSelector(
+// --------------------------------------------------------
+
+export const statusSelector = createSelector(selectAuthState, (state) => {
+  return state.loginOrLogout;
+});
+
+// --------------------------------------------------------
+
+export const signupErrorSelector = createSelector(
   selectAuthState,
-  (state) => state.loginOrLogout
+  (state) => state.signupError
+);
+
+export const signupSuccesSelector = createSelector(
+  selectAuthState,
+  (state) => state.signupSuccess
 );

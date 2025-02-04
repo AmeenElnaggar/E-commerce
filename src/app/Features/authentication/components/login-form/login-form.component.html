@@ -28,7 +28,7 @@
     <p class="cursor-pointer">Forgot your password?</p>
     <p class="cursor-pointer" [routerLink]="['/signup']">Create account</p>
   </div>
-  @if (isError) {
+  @if (Error$ | async) {
   <p class="text-lg text-red-600">
     Email or Password is Invalid<span class="text-orange-400 text-xl"> ⚠</span>
   </p>

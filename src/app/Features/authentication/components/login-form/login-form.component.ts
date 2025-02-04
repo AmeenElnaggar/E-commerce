@@ -9,26 +9,29 @@ import { RouterLink } from '@angular/router';
 import { ValidationService } from '../../services/validation.service';
 import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 import { AuthStatusService } from '../../../../Shared/services/authStatus.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../../../Store/store';
+import { loginErrorSelector } from '../../../../Store/selectors/authentication.selector';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
+<<<<<<< HEAD
   imports: [RouterLink, ReactiveFormsModule],
+=======
+  imports: [RouterLink, ReactiveFormsModule, AsyncPipe],
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
 })
 export class LoginFormComponent {
+  private store = inject(Store<StoreInterface>);
   private validationService = inject(ValidationService);
-  private allProductsService = inject(AllProductsService);
   private authStatusService = inject(AuthStatusService);
 
-  isError: string = '';
-
-  constructor() {
-    effect(() => {
-      this.isError = this.authStatusService.error();
-    });
-  }
+  Error$: Observable<boolean> = this.validationService.loginError$;
 
   myForm = new FormGroup({
     email: new FormControl('', {
@@ -46,17 +49,6 @@ export class LoginFormComponent {
       ],
     }),
   });
-
-  ngOnInit() {
-    let userData: any = localStorage.getItem('User');
-    if (userData) {
-      userData = JSON.parse(userData);
-      this.myForm.controls.email.setValue(userData.email);
-      this.myForm.controls.password.setValue(userData.password);
-    }
-    this.authStatusService.handleError();
-    // this.validationService.onReload();
-  }
 
   get emailIsInvalid() {
     return this.validationService.controlFieldIsInvalid(this.myForm, 'email');

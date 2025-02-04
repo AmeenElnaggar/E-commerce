@@ -3,15 +3,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of, switchMap, take, tap } from 'rxjs';
 import {
-  authStatusSelector,
-  selectAuthUserSelector,
+  authTokenSelector,
+  // selectAuthUserSelector,
 } from '../../Store/selectors/authentication.selector';
 import { searchBarVisibleAction } from '../../Store/actions/search.action';
-import {
-  authSuccessAction,
-  loginAction,
-} from '../../Store/actions/authentication.action';
-import { allProductsSelector } from '../../Store/selectors/products.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +24,7 @@ export class NavbarService {
 
   profileCheckFn(event: Event) {
     this.store
-      .select(selectAuthUserSelector)
+      .select(authTokenSelector)
       .pipe(take(1))
       .subscribe((userData) => {
         if (userData) {
@@ -43,22 +38,5 @@ export class NavbarService {
   openSearchBarFn() {
     this.store.dispatch(searchBarVisibleAction());
     this.router.navigate(['/collection']);
-  }
-
-  navigateToHome() {
-    this.store.select(selectAuthUserSelector).subscribe((res) => {
-      if (res) {
-        this.router.navigate(['/home'], { replaceUrl: true });
-      }
-    });
-  }
-
-  onReload() {
-    let getUserData: any = localStorage.getItem('User');
-    const userToken: any = localStorage.getItem('token');
-    if (userToken) {
-      getUserData = JSON.parse(getUserData);
-      this.store.dispatch(loginAction({ userData: getUserData }));
-    }
   }
 }

@@ -23,24 +23,17 @@
   >
     <p class="mb-3 text-sm font-medium">CATEGORIES</p>
     <div class="flex flex-col gap-2 text-sm font-light text-gray-700">
+      @for (category of categories$ | async; track $index) {
       <p class="flex gap-2">
         <input
           type="checkbox"
           class="w-3"
-          value="6439d5b90049ad0b52b90048"
+          [value]="category.id"
           (change)="toggleCategory($event)"
         />
-        Men
+        {{ category.name }}
       </p>
-      <p class="flex gap-2">
-        <input
-          type="checkbox"
-          class="w-3"
-          value="6439d58a0049ad0b52b9003f"
-          (change)="toggleCategory($event)"
-        />
-        Women
-      </p>
+      }
     </div>
   </div>
 </div>

@@ -5,14 +5,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ValidationService } from '../../services/validation.service';
-import { Store } from '@ngrx/store';
-import {
-  selectAuthUserSelector,
-  selectAuthErrorSelector,
-} from '../../../../Store/selectors/authentication.selector';
+
 import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-signup-form',
@@ -22,8 +19,6 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './signup-form.component.css',
 })
 export class SignupFormComponent {
-  private store = inject(Store);
-  private router = inject(Router);
   private validationService = inject(ValidationService);
 
   myForm = new FormGroup({
@@ -60,8 +55,8 @@ export class SignupFormComponent {
       ],
     }),
   });
-  error$ = this.store.select(selectAuthErrorSelector);
-  successfull$ = this.store.select(selectAuthUserSelector);
+  error$: Observable<boolean> = this.validationService.signupError$;
+  successfull$: Observable<boolean> = this.validationService.signupSuccess$;
 
   get emailIsInvalid() {
     return this.validationService.controlFieldIsInvalid(this.myForm, 'email');

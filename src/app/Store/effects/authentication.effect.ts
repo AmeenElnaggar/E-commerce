@@ -1,51 +1,62 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../store';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, of, switchMap } from 'rxjs';
 import {
-  authFailureAction,
   loginAction,
   signupAction,
+  signupStatusAction,
 } from '../actions/authentication.action';
-import { authSuccessAction } from './../actions/authentication.action';
-import { startLoading, stopLoading } from '../actions/ui.actions';
+import { loginStatusAction } from './../actions/authentication.action';
 
 export class AuthenticationEffect {
   private actions$ = inject(Actions);
-  private store = inject(Store<StoreInterface>);
   private httpClient = inject(HttpClient);
   private apiUrl = 'https://ecommerce.routemisr.com/api/v1/auth/';
 
-  loginOrSignup$ = createEffect(() =>
+  loginEffect = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginAction, signupAction),
-      // tap(() => this.store.dispatch(startLoading())),
-
+      ofType(loginAction),
       switchMap((action) => {
-        if ('userData' in action) {
-          const isLogin = action.type === '[Auth] Login';
-          const userData = action.userData;
-          const url = this.apiUrl + (isLogin ? 'signin' : 'signup');
-          return this.httpClient.post(url, userData).pipe(
-            map((response: any) => {
-              localStorage.setItem('token', response.token);
-              return authSuccessAction({
-                token: response.token,
-                user: response.user,
-              });
-            }),
+        const isLogin = action.type === '[Auth] Login' && 'signin';
+        const userData = action.userData;
+        const url = this.apiUrl + isLogin;
+        return this.httpClient.post(url, userData).pipe(
+          map((response: any) => {
+            localStorage.setItem('token', response.token);
 
-            // tap(() => this.store.dispatch(stopLoading())),
-            catchError((error: Error) => {
-              // this.store.dispatch(stopLoading())
-              return of(authFailureAction({ error: error.message }));
+            return loginStatusAction({
+              token: response.token,
+              error: false,
+            });
+          }),
+          catchError((error: Error) => {
+            return of(loginStatusAction({ token: '', error: true }));
+          })
+        );
+      })
+    )
+  );
+
+  signupEffect = createEffect(() =>
+    this.actions$.pipe(
+      ofType(signupAction),
+      switchMap((action) => {
+        const isSignup = action.type === '[Auth] Signup' && 'signup';
+        const userData = action.userData;
+        const url = this.apiUrl + isSignup;
+        return this.httpClient.post(url, userData).pipe(
+          map((response: any) =>
+            signupStatusAction({
+              isSuccess: true,
+              isError: false,
             })
-          );
-        }
-
-        return of(authFailureAction({ error: 'Invalid action payload' }));
+          ),
+          catchError(() => {
+            return of(signupStatusAction({ isError: true, isSuccess: false }));
+          })
+        );
       })
     )
   );

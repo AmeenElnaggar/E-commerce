@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 
 import { CartService } from '../../services/cart.service';
-import { CartEmptyComponent } from '../../components/cart-empty/cart-empty.component';
+import { CartEmptyComponent } from '../../../../Shared/components/cartEmpty/cart-empty.component';
 import { CartProductsComponent } from '../../components/cart-products/cart-products.component';
 import { CartEmptyDirective } from '../../directives/cartEmpty.directive';
 import { CartTotalComponent } from '../../components/cart-total/cart-total.component';

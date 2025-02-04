@@ -16,7 +16,7 @@ import {
   updateProductCountOfLoggedUserAction,
   deleteProductToLoggedUserAction,
 } from '../../../Store/actions/cart.action';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class CartService {
     .pipe(
       map((response: any) => {
         return response?.data?.products || [];
-      })
+      }, take(1))
     );
 
   isAuth = signal<boolean>(false);

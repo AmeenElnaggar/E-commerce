@@ -9,8 +9,6 @@ import { AllProductsService } from '../../../../Shared/services/allProducts.serv
 import { ProductService } from '../../services/product.service';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../../Store/store';
-import { selectAuthUserSelector } from '../../../../Store/selectors/authentication.selector';
-import { selectedProductDataSelector } from '../../../../Store/selectors/product.selector';
 
 @Component({
   selector: 'app-product-page',

@@ -17,12 +17,16 @@ export class OrdersDataComponent {
   private paymentMethodService = inject(PaymentMethodService);
 
   savedProducts$: Observable<any> = this.cartService.savedProductsOfLoggedUser$;
-  paymentMethod: string = '';
+  paymentMethod: string = 'COD';
 
   constructor() {
     effect(() => {
       this.paymentMethod = this.paymentMethodService.paymentMethod();
     });
+  }
+
+  ngOnInit() {
+    this.savedProducts$.subscribe((res) => console.log(res));
   }
   ProductDate(product: Product) {
     return this.cartService.getProductDate(product);

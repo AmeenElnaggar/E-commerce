@@ -4,15 +4,27 @@ import { Product } from '../models/product.model';
 import { combineLatest, map, Observable } from 'rxjs';
 
 import { allProductsSelector } from '../../Store/selectors/products.selector';
-import { selectedCategoriesSelector } from '../../Store/selectors/categories.selector';
+import {
+  categoriesDataSelector,
+  // categoriesDataSelector,
+  selectedCategoriesSelector,
+} from '../../Store/selectors/categories.selector';
 import { sortOptionSelector } from '../../Store/selectors/sort.selector';
 import { searchValueSelector } from '../../Store/selectors/search.selector';
 import {
   errorOfUiSelector,
   spinnerOfUiSelector,
 } from '../../Store/selectors/ui.selector';
+<<<<<<< HEAD
 import { selectAuthUserSelector } from '../../Store/selectors/authentication.selector';
 import { authSuccessAction } from '../../Store/actions/authentication.action';
+=======
+// import { selectAuthUserSelector } from '../../Store/selectors/authentication.selector';
+import { loginStatusAction } from '../../Store/actions/authentication.action';
+import { getAllCategoriesAction } from '../../Store/actions/categories.action';
+// import { selectAuthTokenSelector } from '../../Store/selectors/authentication.selector';
+// import { fetchCategoriesAction } from '../../Store/actions/categories.action';
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
 
 @Injectable({ providedIn: 'root' })
 export class AllProductsService {
@@ -32,6 +44,9 @@ export class AllProductsService {
         .slice(6, 11)
     )
   );
+
+  allCategories$ = this.store.select(categoriesDataSelector);
+  // .pipe(map((response: any) => response?.data || []));
 
   filterdCategories$: Observable<string[]> = this.store.select(
     selectedCategoriesSelector
@@ -97,6 +112,7 @@ export class AllProductsService {
     });
   }
 
+<<<<<<< HEAD
   loadPage() {
     const checkLogin = setInterval(() => {
       this.store.select(selectAuthUserSelector).subscribe((result) => {
@@ -105,11 +121,31 @@ export class AllProductsService {
       });
     }, 1000);
   }
+=======
+  // loadPage() {
+  //   const checkLogin = setInterval(() => {
+  //     this.store.select(selectAuthTokenSelector).subscribe((result) => {
+  //       this.appIsLoading.set(false);
+  //       clearInterval(checkLogin);
+  //     });
+  //   }, 1000);
+  // }
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
 
   isAuthenticated() {
     const token = localStorage.getItem('token');
     if (token) {
+<<<<<<< HEAD
       this.store.dispatch(authSuccessAction({ token, user: '' }));
     }
   }
+=======
+      this.store.dispatch(loginStatusAction({ token, error: false }));
+    }
+  }
+
+  // getAllCategories() {
+  //   this.store.dispatch(getAllCategoriesAction());
+  // }
+>>>>>>> a14c0eb (Edit Some Logic Of Authentication)
 }

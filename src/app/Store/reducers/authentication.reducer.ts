@@ -1,36 +1,49 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  authFailureAction,
-  authSuccessAction,
+  loginStatusAction,
+  signupStatusAction,
 } from '../actions/authentication.action';
 
 export interface State {
-  token: string | null;
-  user: any | null;
-  error: any | null;
+  token: string;
+  loginError: boolean;
+  signupError: boolean;
+  signupSuccess: boolean;
   loginOrLogout: string;
 }
 
 const initialState: State = {
-  token: null,
-  user: null,
-  error: null,
+  token: '',
+  loginError: false,
+  signupError: false,
+  signupSuccess: false,
   loginOrLogout: 'Login',
 };
 
 export const authReducer = createReducer(
   initialState,
-  on(authSuccessAction, (state, action) => {
-    const isLoginOrLogout = action.user !== null ? 'Logout' : 'Login';
+  on(loginStatusAction, (state, action) => {
+    const isLoginOrLogout = action.token ? 'Logout' : 'Login';
     return {
       ...state,
-      error: null,
-      token: action.token,
-      user: action.user,
+      token: action.token!,
       loginOrLogout: isLoginOrLogout,
+      loginError: action.error!,
     };
   }),
-  on(authFailureAction, (state, action) => {
-    return { ...state, error: action.error, token: null, user: null };
+
+  on(signupStatusAction, (state, action) => {
+    return {
+      ...state,
+      signupSuccess: action.isSuccess,
+      signupError: action.isError,
+    };
   })
+
+  // on(loginFailureAction, (state, action) => {
+  //   return {
+  //     ...state,
+  //     loginError: action.error,
+  //   };
+  // })
 );
