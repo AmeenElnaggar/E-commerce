@@ -18,11 +18,7 @@ import { loginErrorSelector } from '../../../../Store/selectors/authentication.s
 @Component({
   selector: 'app-login-form',
   standalone: true,
-<<<<<<< HEAD
-  imports: [RouterLink, ReactiveFormsModule],
-=======
   imports: [RouterLink, ReactiveFormsModule, AsyncPipe],
->>>>>>> a14c0eb (Edit Some Logic Of Authentication)
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
 })

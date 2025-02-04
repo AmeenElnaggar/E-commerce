@@ -2,16 +2,13 @@ import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
-<<<<<<< HEAD
-=======
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
->>>>>>> a14c0eb (Edit Some Logic Of Authentication)
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
