@@ -10,11 +10,20 @@
     <option value="highToLow">Sort by : High to Low</option>
   </select>
 </div>
+
 <div
   class="grid grid-cols-2 md:gird-cols-3 lg:grid-cols-4 gap-4 gap-y-6 relative"
 >
-  @if (!(isLoading()) && !(error() ) ) { @for (product of products$ | async;
-  track $index) {
+  @if ((isLoading$ | async) && !(isError$ | async ) ) {
+  <div class="absolute w-full sm:text-xl text-center sm:mt-[-50px] mt-12">
+    <app-spinner />
+  </div>
+  } @else if (isError$ | async ) {
+  <p class="absolute w-full sm:text-xl text-center mt-10 border p-4">
+    Something went wrong fetching the avaliable collections 💥💥. Please try
+    again later.
+  </p>
+  } @else { @for (product of products$ | async; track $index) {
   <app-product-item
     [productDetails]="{
       id: product.id,
@@ -23,13 +32,24 @@
       title: product.title
     }"
   />
-  } } @else if (error() ) {
-  <p class="absolute w-full sm:text-xl text-center">
-    {{ error() }}
-  </p>
-  } @else {
-  <div class="absolute right-[-50%] left-[-50%]">
-    <app-spinner />
+  } }
+  <div class="flex justify-center space-x-4 mt-4 w-[700px] m-auto">
+    <button
+      class="px-4 py-2 bg-gray-300 rounded"
+      [disabled]="metaData.currentPage === 1"
+      (click)="onPrevPage()"
+    >
+      Prev
+    </button>
+    <span
+      >الصفحة {{ metaData.currentPage }} من {{ metaData.numberOfPages }}</span
+    >
+    <button
+      class="px-4 py-2 bg-gray-300 rounded"
+      (click)="onNextPage()"
+      [disabled]="metaData.currentPage === metaData.numberOfPages"
+    >
+      Next
+    </button>
   </div>
-  }
 </div>

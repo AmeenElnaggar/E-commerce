@@ -1,7 +1,7 @@
 import { StoreInterface } from '../store';
 
 export const categoriesDataSelector = (state: StoreInterface) => {
-  return state.products.categories;
+  return state.collection.categories;
 };
 
 export const selectedCategoriesSelector = (state: StoreInterface) => {

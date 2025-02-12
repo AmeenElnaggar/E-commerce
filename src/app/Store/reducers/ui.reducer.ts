@@ -1,28 +1,32 @@
 import { createReducer, on } from '@ngrx/store';
-import { isError, startLoading, stopLoading } from '../actions/ui.actions';
+import {
+  uiFailureAction,
+  startLoadingAction,
+  stopLoadingAction,
+} from '../actions/ui.actions';
 
 export interface State {
   isLoading: boolean;
-  error: string;
+  error: boolean;
 }
 
 const initialState: State = {
   isLoading: false,
-  error: '',
+  error: false,
 };
 
 export const uiReducer = createReducer(
   initialState,
 
-  on(startLoading, (state, action) => {
-    return { isLoading: true, error: '' };
+  on(startLoadingAction, (state, action) => {
+    return { ...state, isLoading: true };
   }),
 
-  on(stopLoading, (state, action) => {
-    return { isLoading: false, error: '' };
+  on(stopLoadingAction, (state, action) => {
+    return { ...state, isLoading: false };
   }),
 
-  on(isError, (state, action) => {
-    return { isLoading: false, error: action.errorMsg };
+  on(uiFailureAction, (state, action) => {
+    return { ...state, error: action.error };
   })
 );

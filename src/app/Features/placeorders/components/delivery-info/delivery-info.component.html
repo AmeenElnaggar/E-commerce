@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 w-full sm:max-w-[480px]">
+<form [formGroup]="myForm" class="flex flex-col gap-4 w-full sm:max-w-[480px]">
   <div class="text-xl sm:text-2xl my-3">
     <app-section-title [title]="{ text1: 'DELIVERY', text2: 'INFORMATION' }" />
   </div>
@@ -7,14 +7,18 @@
     <input type="text" placeholder="Last name" />
   </div>
   <input type="text" placeholder="Email address" />
-  <input type="text" placeholder="Street" />
+  <input type="text" placeholder="Street" formControlName="street" />
   <div class="flex gap-3">
-    <input type="text" placeholder="City" />
+    <input
+      type="text"
+      placeholder="City"
+      [formControl]="myForm.controls.city"
+    />
     <input type="text" placeholder="State" />
   </div>
   <div class="flex gap-3">
     <input type="number" placeholder="Zipcode" />
-    <input type="text" placeholder="Country" />
+    <input type="text" placeholder="Country" formControlName="country" />
   </div>
-  <input type="number" placeholder="Phone" />
-</div>
+  <input type="number" placeholder="Phone" formControlName="phone" />
+</form>

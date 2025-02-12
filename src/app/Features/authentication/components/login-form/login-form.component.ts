@@ -7,18 +7,19 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ValidationService } from '../../services/validation.service';
-import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 import { AuthStatusService } from '../../../../Shared/services/authStatus.service';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../../Store/store';
 import { loginErrorSelector } from '../../../../Store/selectors/authentication.selector';
+import { SpinnerComponent } from '../../../../Shared/components/spinner/spinner.component';
+import { spinnerOfUiSelector } from '../../../../Store/selectors/ui.selector';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, AsyncPipe],
+  imports: [RouterLink, ReactiveFormsModule, AsyncPipe, SpinnerComponent, NgIf],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
 })
@@ -28,7 +29,7 @@ export class LoginFormComponent {
   private authStatusService = inject(AuthStatusService);
 
   Error$: Observable<boolean> = this.validationService.loginError$;
-
+  isLoading$: Observable<boolean> = this.validationService.isLoading$;
   myForm = new FormGroup({
     email: new FormControl('', {
       validators: [

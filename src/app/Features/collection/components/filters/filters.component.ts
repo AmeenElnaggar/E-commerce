@@ -6,9 +6,10 @@ import { selectedCategoriesAction } from '../../../../Store/actions/categories.a
 import { selectedCategoriesSelector } from '../../../../Store/selectors/categories.selector';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AllProductsService } from '../../../../Shared/services/allProducts.service';
+import { CollectionsService } from '../../../../Shared/services/collections.service';
 import { Category } from '../../models/category.model';
 import { AsyncPipe } from '@angular/common';
+import { fetchModifiedCollectionAction } from '../../../../Store/actions/collections.action';
 
 @Component({
   selector: 'app-filters',
@@ -19,9 +20,9 @@ import { AsyncPipe } from '@angular/common';
 })
 export class FiltersComponent {
   private store = inject(Store<StoreInterface>);
-  private allProductsService = inject(AllProductsService);
+  private collectionService = inject(CollectionsService);
   private httpClient = inject(HttpClient);
-  categories$: Observable<Category[]> = this.allProductsService.allCategories$;
+  categories$: Observable<Category[]> = this.collectionService.categories$;
 
   showFilter = signal<boolean>(false);
 
@@ -36,14 +37,6 @@ export class FiltersComponent {
         categoryId: checkBoxInput.value,
       })
     );
-  }
-
-  ngOnInit() {
-    // this.httpClient
-    //   .get('https://ecommerce.routemisr.com/api/v1/categories')
-    //   .subscribe((res: any) => {
-    //     this.categories.set(res.data);
-    //     const categories = res.data;
-    //   });
+    this.store.dispatch(fetchModifiedCollectionAction({}));
   }
 }

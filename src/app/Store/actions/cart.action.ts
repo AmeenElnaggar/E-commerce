@@ -1,48 +1,70 @@
 import { createAction, props } from '@ngrx/store';
 import { Product } from '../../Shared/models/product.model';
+import { Cart } from '../../Features/cart/models/cart.model';
+import {
+  DeliveryDetails,
+  PaymentDetails,
+} from '../../Features/placeorders/models/payment.model';
 
-export const onLoadCartFromLSAction = createAction(
-  '[Cart] Load Products From LocalStorage'
+export const fetchCartFromLSAction = createAction(
+  '[CartLS] Fetch Cart From LocalStorage'
 );
 
-export const getProductsFromLSAction = createAction(
-  '[Cart] Get Cart Products',
-  props<{ productsFromLocalStorage: Product[] }>()
+export const getCartFromLSAction = createAction(
+  '[CartLS] Get Cart From LocalStorage',
+  props<{ cart: Cart }>()
 );
 
-export const addProductToLocalStorageAction = createAction(
-  '[Cart] Add Product To LocalStorage'
+export const addProductToLSCartAction = createAction(
+  '[CartLS] Add Product To Cart LocalStorage'
 );
 
-export const updateQuantityAction = createAction(
-  '[Cart] Update Quantity Of Product',
+export const updateCountOfProductInCartLSAction = createAction(
+  '[CartLS] Update Count Of Product In Cart LocalStorage',
   props<{ count: number; selectedProduct: Product }>()
 );
 
-export const deleteProductAction = createAction(
-  '[Cart] Delete Product From Cart',
+export const deleteProductInCartLSAction = createAction(
+  '[CartLS] Delete Product From Cart LocalStorage',
   props<{ selectedProduct: Product }>()
 );
 
 // --------------------------------------------------------------
 
-export const addProductToLoggedUserAction = createAction(
-  '[Cart] Add Product To Logged User'
+export const initUserCartAction = createAction(
+  '[Cart] Add Products From LocalStorage To User Cart'
 );
 
-export const deleteProductToLoggedUserAction = createAction(
-  '[Cart] delete Product To Logged User'
+export const addProductToUserCartAction = createAction(
+  '[Cart] Add Product To User Cart',
+  props<{ product: Product }>()
 );
 
-export const updateProductCountOfLoggedUserAction = createAction(
-  '[Cart] Update Product Count To Logged User'
+export const updateProductOfUserCartAction = createAction(
+  '[Cart] Update Product Count To User Cart',
+  props<{ product: Product; productCount: number }>()
 );
 
-export const onLoadProductsOfLoggedUserAction = createAction(
-  '[Cart] Load Products To Logged User'
+export const deleteProductOfUserCartAction = createAction(
+  '[Cart] delete Product Of User Cart',
+  props<{ product: Product }>()
 );
 
-export const getProductsOfLoggedUserAction = createAction(
-  '[Cart] Get Products Of Logged User',
-  props<{ productsOfLoggedUser: Product[] }>()
+export const fetchUserCartAction = createAction('[Cart] Fetch User Cart');
+
+export const getUserCartAction = createAction(
+  '[Cart] Get User Cart',
+  props<{ userCart: any }>()
+);
+
+// --------------------------------------------
+
+export const fetchPaymentDataAction = createAction(
+  '[Payment] Fetch Payment Deatils',
+  props<{ customerInfo: DeliveryDetails; paymentMethod: string }>()
+);
+
+export const getPaymentDataAction = createAction(
+  '[Payment] Get Payment Details',
+  props<{ paymentData: PaymentDetails }>()
 );

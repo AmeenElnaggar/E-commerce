@@ -2,19 +2,26 @@ import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
 import { AuthStatusService } from '../../services/authStatus.service';
-import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { map, Observable } from 'rxjs';
+import { CartService } from '../../../Features/cart/services/cart.service';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AsyncPipe],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   private navbarService = inject(NavbarService);
   private authStatusService = inject(AuthStatusService);
+  private cartService = inject(CartService);
+
+  savedProducts$: Observable<any> = this.cartService.comparedCarts$.pipe(
+    map((response) => response.products)
+  );
 
   loginOrLogout$: Observable<string> = this.authStatusService.status$;
 
@@ -32,15 +39,5 @@ export class HeaderComponent {
 
   onLogout() {
     this.authStatusService.logoutCheckFn();
-  }
-
-  get cartProductsLength() {
-    let cartLength = localStorage.getItem('Products');
-    if (cartLength) {
-      cartLength = JSON.parse(cartLength);
-      return cartLength?.length;
-    } else {
-      return 0;
-    }
   }
 }

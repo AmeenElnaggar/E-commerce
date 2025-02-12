@@ -6,17 +6,17 @@
   <div class="flex flex-col gap-2 mt-2 text-sm">
     <div class="flex justify-between">
       <p>Subtotal</p>
-      <p>{{ subTotal() | currency }}</p>
+      <p>{{ (cartTotal$ | async)?.subTotal | currency }}</p>
     </div>
     <hr />
     <div class="flex justify-between">
       <p>Shipping Fee</p>
-      <p>{{ shippingFee() | currency }}</p>
+      <p>{{ (cartTotal$ | async)?.shippingFee | currency }}</p>
     </div>
     <hr />
     <div class="flex justify-between">
       <p>Total</p>
-      <p>{{ totalPrice() | currency }}</p>
+      <p>{{ (cartTotal$ | async)?.totalPrice | currency }}</p>
     </div>
   </div>
 </div>

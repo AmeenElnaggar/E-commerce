@@ -1,17 +1,17 @@
 <div>
-  @for (product of (savedProducts$ | async); track $index) { product
+  @for (product of (savedOrders$ | async); track $index) { product
   <div
     class="py-4 border-t border-b text-gray-700 flex flex-cols md:flex-row md:items-center md:justify-between gap-4"
   >
     <div class="flex items-start gap-6 text-sm">
       <img
-        [src]="product.product.imageCover"
+        [src]="product.imageCover"
         alt="product-image"
         class="w-16 sm:w-20"
       />
       <div>
         <p class="sm:text-base font-medium">
-          {{ product.product.title }}
+          {{ product.title }}
         </p>
         <div class="flex items-center gap-3 mt-2 text-base text-gray-700">
           <p class="text-lg">${{ product.price }}</p>
@@ -19,12 +19,11 @@
         </div>
         <p class="mt-2">
           Date :
-          <span class="text-gray-400">{{
-            ProductDate(product.product) | date : "fullDate"
-          }}</span>
+          <span class="text-gray-400">{{ product.date | date }}</span>
         </p>
         <p class="mt-2">
-          Payment: <span class="text-gray-400">{{ paymentMethod }}</span>
+          Payment:
+          <span class="text-gray-400">{{ product.paymentMethod }}</span>
         </p>
       </div>
     </div>

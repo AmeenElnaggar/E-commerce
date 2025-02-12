@@ -73,7 +73,7 @@
             <p class="cursor-pointer hover:text-black">My Profile</p>
             <p
               class="cursor-pointer hover:text-black"
-              [routerLink]="['orders']"
+              [routerLink]="['allorders']"
             >
               Orders
             </p>
@@ -95,7 +95,7 @@
       <p
         class="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]"
       >
-        {{ cartProductsLength }}
+        {{ (savedProducts$ | async)?.length || 0 }}
       </p>
     </div>
     <img

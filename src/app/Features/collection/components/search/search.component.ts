@@ -1,6 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AllProductsService } from '../../../../Shared/services/allProducts.service';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../../Store/store';
 import {

@@ -9,8 +9,10 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { reducers } from './Store/store';
 import { CollectionEffect } from './Store/effects/collection.effect';
-import { CartEffect } from './Store/effects/cart.effect';
 import { AuthenticationEffect } from './Store/effects/authentication.effect';
+import { ProductEffect } from './Store/effects/product.effect';
+import { CartEffect } from './Store/effects/cart.effect';
+import { OrdersEffect } from './Store/effects/orders.effect';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,8 +25,9 @@ export const appConfig: ApplicationConfig = {
     provideEffects([
       CollectionEffect,
       AuthenticationEffect,
+      ProductEffect,
       CartEffect,
-      CartEffect,
+      OrdersEffect,
     ]),
   ],
 };

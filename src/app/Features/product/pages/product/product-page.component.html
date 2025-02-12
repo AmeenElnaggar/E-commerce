@@ -1,4 +1,12 @@
-@if (!(isLoading()) && !(error())) {
+@if ((isLoading$ | async) && !(isError$ | async)) {
+<div class="absolute right-[-50%] left-[-50%]">
+  <app-spinner />
+</div>
+}@else if(isError$ | async){
+<p class="absolute w-full sm:text-xl text-center mt-10 border p-4">
+  Something went wrong fetching the product data 💥💥. Please try again later.
+</p>
+}@else{
 <div
   class="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100"
 >
@@ -8,13 +16,7 @@
     </div>
     <app-product-info />
   </div>
-  <app-product-desc-reviews />
   <app-related-products />
 </div>
-}@else if(error()){
-<p>{{ error() }}</p>
-}@else {
-<div class="absolute right-[-50%] left-[-50%]">
-  <app-spinner />
-</div>
+<app-product-desc-reviews />
 }

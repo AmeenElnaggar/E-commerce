@@ -1,3 +1,6 @@
+@if (isLoading$| async) {
+<app-spinner />
+}@else {
 <form
   class="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800"
   [formGroup]="myForm"
@@ -43,3 +46,5 @@
     Sign In
   </button>
 </form>
+
+}

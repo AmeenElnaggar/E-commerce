@@ -6,9 +6,9 @@ import { ProductItemComponent } from '../../../../Shared/components/product-item
 
 import { Observable } from 'rxjs';
 import { Product } from '../../../../Shared/models/product.model';
-import { SpinnerComponent } from '../../../../Shared/spinner/spinner.component';
+// import { SpinnerComponent } from '../../../../Shared/components/spinner/spinner.component';
 
-import { AllProductsService } from '../../../../Shared/services/allProducts.service';
+import { CollectionsService } from '../../../../Shared/services/collections.service';
 
 @Component({
   selector: 'app-best-sellers',
@@ -17,20 +17,13 @@ import { AllProductsService } from '../../../../Shared/services/allProducts.serv
     SectionTitleComponent,
     AsyncPipe,
     ProductItemComponent,
-    SpinnerComponent,
+    // SpinnerComponent,
   ],
   templateUrl: './best-sellers.component.html',
   styleUrl: './best-sellers.component.css',
 })
 export class BestSellersComponent {
-  private allProductsService = inject(AllProductsService);
+  private collectionService = inject(CollectionsService);
 
-  isLoading = this.allProductsService.isLoading;
-  error = this.allProductsService.error;
-
-  bestProducts$: Observable<Product[]> = this.allProductsService.bestProducts$;
-
-  ngOnInit() {
-    this.allProductsService.isLoadingAndErrorStatus();
-  }
+  bestProducts$: Observable<Product[]> = this.collectionService.bestProducts$;
 }

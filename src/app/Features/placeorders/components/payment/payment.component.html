@@ -7,10 +7,9 @@
   <app-section-title [title]="{ text1: 'PAYMENT', text2: 'METHOD' }" />
   <!-- payment -->
   <div class="flex gap-3 flex-col lg:flex-row">
-    <div>
+    <div (click)="onChoosePayment('stripe')">
       <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
         <p
-          (click)="onClick('stripe')"
           class="min-w-3.5 h-3.5 border rounded-full"
           [class]="{
             'bg-green-400': paymentMethod === 'stripe'
@@ -23,26 +22,10 @@
         />
       </div>
     </div>
-    <div>
+
+    <div (click)="onChoosePayment('cod')">
       <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
         <p
-          (click)="onClick('razorpay')"
-          class="min-w-3.5 h-3.5 border rounded-full"
-          [class]="{
-            'bg-green-400': paymentMethod === 'razorpay'
-          }"
-        ></p>
-        <img
-          src="frontend_assets/razorpay_logo.png"
-          alt="payment-img"
-          class="h-4 mx-4"
-        />
-      </div>
-    </div>
-    <div>
-      <div class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
-        <p
-          (click)="onClick('cod')"
           class="min-w-3.5 h-3.5 border rounded-full"
           [class]="{
             'bg-green-400': paymentMethod === 'cod'
@@ -55,9 +38,14 @@
     </div>
   </div>
   <div class="w-full text-end mt-8">
+    <!-- [routerLink]="['/orders']" -->
     <button
-      [routerLink]="['/orders']"
       class="bg-black text-white px-16 py-3 text-sm"
+      (click)="onPlaceOrder()"
+      [disabled]="(customerForm$ | async)?.invalid || paymentMethod === ''"
+      [class]="{
+        'bg-gray-400': (customerForm$ | async)?.invalid || paymentMethod === ''
+      }"
     >
       PLACE ORDER
     </button>

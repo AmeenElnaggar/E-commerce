@@ -32,7 +32,7 @@ export const routes: Routes = [
     canMatch: [isAuthGuard],
   },
   {
-    path: 'orders',
+    path: 'allorders',
     component: OrdersComponent,
     canMatch: [isAuthGuard],
   },

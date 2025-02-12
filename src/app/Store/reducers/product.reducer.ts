@@ -1,18 +1,23 @@
 import { createReducer, on, Store } from '@ngrx/store';
 import { Product } from '../../Shared/models/product.model';
-import { selectedProductAction } from '../actions/product.actions';
+import {
+  getSelectedProductDataAction,
+  selectedProductIdAction,
+} from '../actions/product.actions';
 
 export interface State {
   selectedProductId: string;
+  selectedProductData: Product;
 }
 
 const intialState: State = {
   selectedProductId: '',
+  selectedProductData: { id: '', price: 0, title: '', imageCover: '' },
 };
 
 export const selectedProductReducer = createReducer(
   intialState,
-  on(selectedProductAction, (state, action) => {
-    return { selectedProductId: action.productId };
+  on(getSelectedProductDataAction, (state, action) => {
+    return { ...state, selectedProductData: action.productData };
   })
 );

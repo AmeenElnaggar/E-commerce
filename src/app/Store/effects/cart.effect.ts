@@ -3,22 +3,42 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, of, switchMap, take, tap } from 'rxjs';
 import {
-  addProductToLocalStorageAction,
-  addProductToLoggedUserAction,
-  deleteProductAction,
-  getProductsFromLSAction,
-  onLoadProductsOfLoggedUserAction,
-  onLoadCartFromLSAction,
-  updateQuantityAction,
-  getProductsOfLoggedUserAction,
-  updateProductCountOfLoggedUserAction,
-  deleteProductToLoggedUserAction,
+  combineLatest,
+  concatMap,
+  exhaustMap,
+  filter,
+  finalize,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  tap,
+  toArray,
+} from 'rxjs';
+import {
+  addProductToLSCartAction,
+  initUserCartAction,
+  deleteProductInCartLSAction,
+  getCartFromLSAction,
+  fetchUserCartAction,
+  fetchCartFromLSAction,
+  updateCountOfProductInCartLSAction,
+  getUserCartAction,
+  updateProductOfUserCartAction,
+  deleteProductOfUserCartAction,
+  addProductToUserCartAction,
+  getPaymentDataAction,
+  fetchPaymentDataAction,
 } from '../actions/cart.action';
 import { Product } from '../../Shared/models/product.model';
 import { selectedProductDataSelector } from '../selectors/product.selector';
 import { CartService } from '../../Features/cart/services/cart.service';
+import { Cart } from '../../Features/cart/models/cart.model';
+import { PaymentDetails } from '../../Features/placeorders/models/payment.model';
+import { savedUserCartSelector } from '../selectors/cart.selector';
 
 export class CartEffect {
   private actions$ = inject(Actions);
@@ -27,34 +47,26 @@ export class CartEffect {
   private cartService = inject(CartService);
   private destroyRef = inject(DestroyRef);
 
-  onLoadCartFromLS = createEffect(() =>
-    this.actions$.pipe(
-      ofType(onLoadCartFromLSAction),
-      switchMap(() => {
-        let loadedProducts: any = localStorage.getItem('Products');
-        loadedProducts = loadedProducts ? JSON.parse(loadedProducts) : [];
-        return of(
-          getProductsFromLSAction({ productsFromLocalStorage: loadedProducts })
-        );
-      })
-    )
-  );
-
-  onAddProductToLS = createEffect(
+  // product-info هو البدايه هنا
+  addProductToCartLS = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(addProductToLocalStorageAction),
-        switchMap(() => {
-          this.store
+        ofType(addProductToLSCartAction),
+        map(() => {
+          const subscribtion = this.store
             .select(selectedProductDataSelector)
             .pipe(take(1))
             .subscribe((selectedProduct) => {
               let updatedCart = [];
-              let loadedProducts: any = localStorage.getItem('Products');
-              loadedProducts = loadedProducts ? JSON.parse(loadedProducts) : [];
+              let loadedProducts: any = localStorage.getItem('Cart');
+              loadedProducts = loadedProducts
+                ? JSON.parse(loadedProducts).products
+                : [];
+
               const isProductExist = loadedProducts.some(
                 (product: Product) => product.id === selectedProduct.id
               );
+
               const { id, count, price, imageCover, title } = selectedProduct;
 
               updatedCart = isProductExist
@@ -67,160 +79,215 @@ export class CartEffect {
                       price,
                       imageCover,
                       title,
-                      date: new Date(),
                     },
                   ];
-              localStorage.setItem('Products', JSON.stringify(updatedCart));
+
+              const cart = this.cartService.calcCartPrice(updatedCart);
+
+              localStorage.setItem('Cart', JSON.stringify(cart));
             });
-          return of();
+          this.destroyRef.onDestroy(() => subscribtion.unsubscribe());
         })
       ),
     { dispatch: false }
   );
 
-  onUpdateCountOfProductLS = createEffect(
+  // cartPage البدايه من هنا
+  loadCartLS = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchCartFromLSAction),
+      switchMap(() => {
+        let loadedCart: any = localStorage.getItem('Cart');
+        loadedCart = loadedCart ? JSON.parse(loadedCart) : [];
+        return of(getCartFromLSAction({ cart: loadedCart }));
+      })
+    )
+  );
+
+  // cart-products البدايه من هنا
+  updateCountOfProductInCartLS = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(updateQuantityAction),
-        switchMap(({ count, selectedProduct }) => {
-          let loadedProducts: any = localStorage.getItem('Products');
-          loadedProducts = loadedProducts ? JSON.parse(loadedProducts) : [];
+        ofType(updateCountOfProductInCartLSAction),
+        map(({ count, selectedProduct }) => {
+          let loadedCart: any = localStorage.getItem('Cart');
+          loadedCart = loadedCart ? JSON.parse(loadedCart).products : [];
 
-          const updatedProducts = loadedProducts.map((product: Product) =>
+          const updatedCart = loadedCart.map((product: Product) =>
             product.id === selectedProduct.id
               ? { ...product, count: count }
               : product
           );
+          const cart = this.cartService.calcCartPrice(updatedCart);
 
-          localStorage.setItem('Products', JSON.stringify(updatedProducts));
-          return of();
+          localStorage.setItem('Cart', JSON.stringify(cart));
         })
       ),
     { dispatch: false }
   );
 
-  onDeleteProductFromLS = createEffect(
+  // cart-products البدايه من هنا
+  deleteProductInCartLS = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(deleteProductAction),
-        switchMap(({ selectedProduct }) => {
-          let loadedProducts: any = localStorage.getItem('Products');
-          loadedProducts = loadedProducts ? JSON.parse(loadedProducts) : [];
-
+        ofType(deleteProductInCartLSAction),
+        map(({ selectedProduct }) => {
+          let loadedProducts: any = localStorage.getItem('Cart');
+          loadedProducts = loadedProducts
+            ? JSON.parse(loadedProducts).products
+            : [];
           const updatedProducts = loadedProducts.filter((product: Product) => {
             return product.id !== selectedProduct.id;
           });
-          localStorage.setItem('Products', JSON.stringify(updatedProducts));
-          return of();
+          const cart = this.cartService.calcCartPrice(updatedProducts);
+          localStorage.setItem('Cart', JSON.stringify(cart));
         })
       ),
     { dispatch: false }
   );
 
-  onAddProductToLoggedUser = createEffect(
+  // -------------------------------------------------------------------
+
+  initUserCart = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(addProductToLoggedUserAction),
-        switchMap(() => {
-          const subscribtion = this.cartService.savedProductsFromLS$
-            .pipe(take(1))
-            .subscribe((products) => {
-              products.forEach((product: Product) => {
-                this.httpClient
-                  .post('https://ecommerce.routemisr.com/api/v1/cart', {
-                    productId: product.id,
-                  })
-                  .subscribe({
-                    next: (res) => console.log('ADDED'),
-                  });
-              });
-            });
-          return of();
-        })
+        ofType(initUserCartAction),
+        switchMap(() =>
+          this.cartService.savedCartOfLS$.pipe(
+            map((cart) => cart.products || []),
+            filter((products) => products.length !== 0),
+            concatMap((products: Product[]) =>
+              from(products).pipe(
+                concatMap((product: Product) =>
+                  this.httpClient
+                    .post('https://ecommerce.routemisr.com/api/v1/cart', {
+                      productId: product.id,
+                    })
+                    .pipe(
+                      tap(() =>
+                        console.log(`✅ ADDED Product ID: ${product.id}`)
+                      ),
+                      filter(() => product.count! > 1),
+                      concatMap(() =>
+                        this.httpClient.put(
+                          `https://ecommerce.routemisr.com/api/v1/cart/${product.id}`,
+                          {
+                            count: product.count,
+                          }
+                        )
+                      )
+                    )
+                ),
+                toArray(),
+                tap(() => {
+                  localStorage.removeItem('Cart');
+                })
+              )
+            )
+          )
+        )
       ),
     { dispatch: false }
   );
 
-  onDeleteProductToLoggedUser = createEffect(
+  addProductToUserCart = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(deleteProductToLoggedUserAction),
-        switchMap(() => {
-          const subscribtion = this.cartService.savedProductsFromLS$
-            .pipe(take(1))
-            .subscribe((products) => {
-              products.forEach((product: Product) => {
-                this.httpClient
-                  .delete(
-                    `https://ecommerce.routemisr.com/api/v1/cart/${product.id}`
-                  )
-                  .subscribe({
-                    next: (res) => console.log('DELETED'),
-                  });
-              });
-            });
-          return of();
+        ofType(addProductToUserCartAction),
+        switchMap(({ product }) => {
+          return this.httpClient
+            .post('https://ecommerce.routemisr.com/api/v1/cart', {
+              productId: product.id,
+            })
+            .pipe(
+              tap(() => {
+                this.cartService.fetchUserCart();
+                console.log(`✅ ADDED Product ID: ${product.id}`);
+              })
+            );
         })
       ),
     { dispatch: false }
   );
 
-  onUpdateProductCountToLoggedUser = createEffect(
+  updateProductCountOfUserCart = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(updateProductCountOfLoggedUserAction),
-        switchMap(() => {
-          const subscribtion = this.cartService.savedProductsFromLS$.subscribe(
-            (products) => {
-              products.forEach((product: Product) => {
-                this.httpClient
-                  .put(
-                    `https://ecommerce.routemisr.com/api/v1/cart/${product.id}`,
-                    {
-                      count: `${product.count}`,
-                    }
-                  )
-                  .subscribe({
-                    next: (res) => console.log('UPDATED'),
-                  });
-              });
-            }
-          );
-          return of();
+        ofType(updateProductOfUserCartAction),
+        switchMap(({ product, productCount }) =>
+          this.httpClient.put(
+            `https://ecommerce.routemisr.com/api/v1/cart/${product.id}`,
+            { count: productCount }
+          )
+        ),
+        tap(() => console.log('UPDATED'))
+      ),
+    { dispatch: false }
+  );
+
+  deleteProductOfUserCart = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteProductOfUserCartAction),
+        switchMap(({ product }) =>
+          this.httpClient.delete(
+            `https://ecommerce.routemisr.com/api/v1/cart/${product.id}`
+          )
+        ),
+        tap(() => {
+          this.cartService.fetchUserCart();
+          console.log('DELETED');
         })
       ),
     { dispatch: false }
   );
 
-  onLoadProductsOfLoggedUser = createEffect(() =>
+  loadUserCart = createEffect(() =>
     this.actions$.pipe(
-      ofType(onLoadProductsOfLoggedUserAction),
+      ofType(fetchUserCartAction),
       switchMap(() => {
         return this.httpClient
-          .get<Product[]>('https://ecommerce.routemisr.com/api/v1/cart')
+          .get('https://ecommerce.routemisr.com/api/v1/cart')
           .pipe(
-            map((response: Product[]) => {
-              return getProductsOfLoggedUserAction({
-                productsOfLoggedUser: response,
+            take(1),
+            map((response: any) => {
+              return getUserCartAction({
+                userCart: response,
               });
             })
           );
       })
     )
   );
-}
 
-// loadCart = createEffect(() =>
-//   this.actions$.pipe(
-//     ofType(loadCartAction),
-//     switchMap(() => {
-//       return this.httpClient.get(
-//         'https://ecommerce.routemisr.com/api/v1/cart'
-//       );
-//     }),
-//     map((products) => ({
-//       type: '[Cart] Load Cart Products',
-//       payload: products,
-//     }))
-//   )
-// );
+  paymentUserCart = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchPaymentDataAction),
+      switchMap(({ customerInfo, paymentMethod }) => {
+        return this.cartService.savedUserCart$.pipe(
+          filter((response) => response.cartId),
+          switchMap(({ cartId }) => {
+            let url = 'https://ecommerce.routemisr.com/api/v1/orders/';
+
+            if (paymentMethod === 'cod') {
+              url = url + cartId;
+            } else {
+              url = `${url}checkout-session/${cartId}?url=http://localhost:3000`;
+            }
+
+            return this.httpClient
+              .post(url, {
+                shippingAddress: customerInfo,
+              })
+              .pipe(
+                map((response: any) => {
+                  console.log(response);
+                  return getPaymentDataAction({ paymentData: response });
+                })
+              );
+          })
+        );
+      })
+    )
+  );
+}

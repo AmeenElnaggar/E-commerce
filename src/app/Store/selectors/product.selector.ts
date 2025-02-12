@@ -1,31 +1,22 @@
 import { createSelector } from '@ngrx/store';
 import { StoreInterface } from '../store';
 
-const selectedProductIdSelector = (state: StoreInterface) => {
-  return state.product.selectedProductId;
+export const selectedProductDataSelector = (state: StoreInterface) => {
+  return state.product.selectedProductData;
 };
 
-const allProductsSelector = (state: StoreInterface) => {
-  return state.products.allProducts;
+const originalProductsSelector = (state: StoreInterface) => {
+  return state.collection.originalProducts;
 };
-
-export const selectedProductDataSelector = createSelector(
-  selectedProductIdSelector,
-  allProductsSelector,
-  (productId, allProucts) => {
-    return allProucts.find((product) => product.id === productId)!;
-  }
-);
 
 export const relatedProductsSelector = createSelector(
   selectedProductDataSelector,
-  allProductsSelector,
-  (selectedProduct, allProucts) => {
-    return [...allProucts]
+  originalProductsSelector,
+  (selectedProduct, originalProducts) => {
+    return [...originalProducts]
       .filter(
         (product) => selectedProduct.category?.name === product.category?.name
       )
-      .sort((a, b) => b.price - a.price)
       .slice(0, 5)!;
   }
 );

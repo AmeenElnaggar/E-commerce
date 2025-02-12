@@ -1,33 +1,41 @@
 import { createReducer, on } from '@ngrx/store';
 import { Product } from '../../Shared/models/product.model';
 import {
-  getProductsFromLSAction,
-  getProductsOfLoggedUserAction,
-  updateQuantityAction,
+  getCartFromLSAction,
+  getPaymentDataAction,
+  getUserCartAction,
 } from '../actions/cart.action';
+import { Cart } from '../../Features/cart/models/cart.model';
+import { PaymentDetails } from '../../Features/placeorders/models/payment.model';
 
 export interface State {
-  localStorageProducts: Product[];
-  loggedUserProducts: Product[];
+  localStorageCart: Cart;
+  userCart: any;
+  // totalPrice: number;
+  paymentData: any;
 }
 
 const initialState: State = {
-  localStorageProducts: [],
-  loggedUserProducts: [],
+  localStorageCart: {
+    products: [],
+    cartTotalPrice: { subTotal: 0, shippingFee: 0, totalPrice: 0 },
+  },
+  userCart: [],
+  paymentData: {
+    status: '',
+    session: { cancel_url: '', success_url: '', url: '' },
+  },
 };
-// addedProduct: {
-//   id: '',
-//   imageCover: '',
-//   price: 0,
-//   title: '',
-// },
 
 export const cartReducer = createReducer(
   initialState,
-  on(getProductsFromLSAction, (state, action) => {
-    return { ...state, localStorageProducts: action.productsFromLocalStorage };
+  on(getCartFromLSAction, (state, action) => {
+    return { ...state, localStorageCart: action.cart };
   }),
-  on(getProductsOfLoggedUserAction, (state, action) => {
-    return { ...state, loggedUserProducts: action.productsOfLoggedUser };
+  on(getUserCartAction, (state, action) => {
+    return { ...state, userCart: action.userCart };
+  }),
+  on(getPaymentDataAction, (state, action) => {
+    return { ...state, paymentData: action.paymentData };
   })
 );

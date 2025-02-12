@@ -4,9 +4,9 @@ import { ProductItemComponent } from '../../../../Shared/components/product-item
 import { Observable } from 'rxjs';
 import { Product } from '../../../../Shared/models/product.model';
 import { AsyncPipe } from '@angular/common';
-import { SpinnerComponent } from '../../../../Shared/spinner/spinner.component';
+// import { SpinnerComponent } from '../../../../Shared/components/spinner/spinner.component';
 
-import { AllProductsService } from '../../../../Shared/services/allProducts.service';
+import { CollectionsService } from '../../../../Shared/services/collections.service';
 
 @Component({
   selector: 'app-latest-collection',
@@ -15,21 +15,14 @@ import { AllProductsService } from '../../../../Shared/services/allProducts.serv
     SectionTitleComponent,
     ProductItemComponent,
     AsyncPipe,
-    SpinnerComponent,
+    // SpinnerComponent,
   ],
   templateUrl: './latestcollection.component.html',
   styleUrl: './latestcollection.component.css',
 })
 export class LatestcollectionComponent {
-  private allProductsService = inject(AllProductsService);
-
-  isLoading = this.allProductsService.isLoading;
-  error = this.allProductsService.error;
+  private collectionService = inject(CollectionsService);
 
   latestProducts$: Observable<Product[]> =
-    this.allProductsService.latestProducts$;
-
-  ngOnInit() {
-    this.allProductsService.isLoadingAndErrorStatus();
-  }
+    this.collectionService.latestProducts$;
 }

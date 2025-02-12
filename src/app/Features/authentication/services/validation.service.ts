@@ -3,6 +3,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   loginAction,
+  loginStatusAction,
   signupAction,
   signupStatusAction,
 } from '../../../Store/actions/authentication.action';
@@ -15,6 +16,7 @@ import {
 import { Router } from '@angular/router';
 import { NavbarService } from '../../../Shared/services/navbar.service';
 import { Observable, timer } from 'rxjs';
+import { spinnerOfUiSelector } from '../../../Store/selectors/ui.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +29,8 @@ export class ValidationService {
 
   signupError$: Observable<boolean> = this.store.select(signupErrorSelector);
   signupSuccess$: Observable<boolean> = this.store.select(signupSuccesSelector);
+
+  isLoading$: Observable<boolean> = this.store.select(spinnerOfUiSelector);
 
   controlFieldIsInvalid(form: FormGroup, controlName: string) {
     const control = form.get(controlName)!;
@@ -56,11 +60,7 @@ export class ValidationService {
     if (getUserData) {
       getUserData = JSON.parse(getUserData);
       this.store.dispatch(loginAction({ userData: getUserData }));
-      this.store.select(authTokenSelector).subscribe((res) => {
-        if (res) {
-          this.navigateToLastPage();
-        }
-      });
+      this.navigateToLastPage();
     }
   }
 
@@ -103,7 +103,12 @@ export class ValidationService {
       });
     }
   }
-
+  isAuthenticated() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.store.dispatch(loginStatusAction({ token, error: false }));
+    }
+  }
   // onReload() {
   //   // let getUserData: any = localStorage.getItem('UserLogin');
   //   // const userToken: any = localStorage.getItem('token');
