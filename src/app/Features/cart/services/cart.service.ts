@@ -80,13 +80,8 @@ export class CartService {
         );
       } else {
         this.savedCartOfLS$.pipe(take(1)).subscribe((response: any) => {
-          const isProductExist = response.products.some(
-            (localProduct: Product) => localProduct.id === selectedProduct.id
-          );
-          if (!isProductExist) {
-            this.store.dispatch(addProductToLSCartAction());
-            this.fetchCartFromLS();
-          }
+          this.store.dispatch(addProductToLSCartAction());
+          this.fetchCartFromLS();
         });
       }
     });
